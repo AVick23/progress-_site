@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ПРОГРЕСС+ SMART Edition — Руководство пользователя v2.0</title>
+  <title>ПРОГРЕСС+ SMART Edition — Руководство пользователя v1.0</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -63,24 +63,38 @@
       --pink-50: oklch(0.20 0.08 350);
     }
 
-    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    html { 
+      scroll-behavior: smooth; 
+      -webkit-font-smoothing: antialiased; 
+      -moz-osx-font-smoothing: grayscale; 
+      font-size: 16px;
+    }
+
+    @media (max-width: 480px) {
+      html { font-size: 14px; }
+    }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
       background: var(--bg-primary);
       color: var(--text-primary);
-      line-height: 1.6;
+      line-height: 1.7;
       transition: background-color 0.3s ease, color 0.3s ease;
+      overflow-x: hidden;
     }
 
-    .app-container { display: flex; min-height: 100vh; }
+    .app-container { 
+      display: flex; 
+      min-height: 100vh; 
+      position: relative;
+    }
 
     /* Sidebar */
     .sidebar {
       position: fixed;
       top: 0;
       left: 0;
-      width: 288px;
+      width: 280px;
       height: 100vh;
       background: var(--bg-secondary);
       border-right: 1px solid var(--border-color);
@@ -99,60 +113,86 @@
       .sidebar.collapsed { transform: translateX(-100%); }
     }
 
-    .sidebar-header { padding: 24px; border-bottom: 1px solid var(--border-color); }
+    .sidebar-header { 
+      padding: 20px; 
+      border-bottom: 1px solid var(--border-color); 
+      flex-shrink: 0;
+    }
 
     .logo { display: flex; align-items: center; gap: 12px; }
 
     .logo-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 14px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: 700;
-      font-size: 16px;
+      font-size: 15px;
       box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+      flex-shrink: 0;
     }
 
-    .logo-text h1 { font-size: 18px; font-weight: 700; color: var(--text-primary); }
-    .logo-text p { font-size: 12px; color: var(--text-muted); }
-    .logo-text .badge { font-size: 10px; background: linear-gradient(135deg, #6366f1, #a855f7); color: white; padding: 2px 8px; border-radius: 10px; margin-top: 4px; display: inline-block; }
+    .logo-text h1 { font-size: 16px; font-weight: 700; color: var(--text-primary); line-height: 1.3; }
+    .logo-text p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .logo-text .badge { 
+      font-size: 9px; 
+      background: linear-gradient(135deg, #6366f1, #a855f7); 
+      color: white; 
+      padding: 2px 8px; 
+      border-radius: 8px; 
+      margin-top: 4px; 
+      display: inline-block; 
+    }
 
-    .sidebar-nav { flex: 1; overflow-y: auto; padding: 16px; }
+    .sidebar-nav { 
+      flex: 1; 
+      overflow-y: auto; 
+      padding: 12px; 
+      -webkit-overflow-scrolling: touch;
+    }
 
     .nav-item {
       display: flex;
       align-items: center;
-      gap: 12px;
-      padding: 10px 14px;
-      border-radius: 12px;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
       cursor: pointer;
       color: var(--text-secondary);
       text-decoration: none;
       transition: all 0.2s ease;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
       border: none;
       background: none;
       width: 100%;
       text-align: left;
-      font-size: 14px;
+      font-size: 13px;
+      line-height: 1.4;
     }
 
     .nav-item:hover { background: var(--bg-tertiary); color: var(--text-primary); }
     .nav-item.active { background: linear-gradient(135deg, var(--purple-50), var(--blue-50)); color: var(--accent-purple); font-weight: 600; }
-    .nav-item .icon { font-size: 18px; flex-shrink: 0; }
-    .nav-item .arrow { margin-left: auto; transition: transform 0.2s ease; font-size: 10px; }
+    .nav-item .icon { font-size: 16px; flex-shrink: 0; }
+    .nav-item .arrow { margin-left: auto; transition: transform 0.2s ease; font-size: 8px; }
     .nav-item.expanded .arrow { transform: rotate(90deg); }
 
     .nav-children { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-    .nav-children.open { max-height: 1000px; }
+    .nav-children.open { max-height: 2000px; }
 
-    .nav-child { padding: 8px 14px 8px 44px; font-size: 13px; }
+    .nav-child { padding: 8px 12px 8px 38px; font-size: 12px; }
 
-    .sidebar-footer { padding: 16px; border-top: 1px solid var(--border-color); text-align: center; font-size: 12px; color: var(--text-muted); }
+    .sidebar-footer { 
+      padding: 12px; 
+      border-top: 1px solid var(--border-color); 
+      text-align: center; 
+      font-size: 11px; 
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
 
     /* Header */
     .header {
@@ -162,44 +202,59 @@
       background: var(--bg-secondary);
       border-bottom: 1px solid var(--border-color);
       backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
     }
 
-    .header-content { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 24px; }
+    .header-content { 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      height: 56px; 
+      padding: 0 16px; 
+    }
+
+    @media (min-width: 768px) {
+      .header-content { height: 60px; padding: 0 24px; }
+    }
 
     .menu-toggle {
-      padding: 10px;
-      border-radius: 12px;
+      padding: 8px;
+      border-radius: 10px;
       border: none;
       background: none;
       cursor: pointer;
       color: var(--text-secondary);
       transition: background 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .menu-toggle:hover { background: var(--bg-tertiary); }
 
     .mobile-logo { display: flex; align-items: center; gap: 10px; }
-    .mobile-logo .logo-icon { width: 36px; height: 36px; font-size: 12px; border-radius: 10px; }
-    .mobile-logo span { font-weight: 700; color: var(--text-primary); }
+    .mobile-logo .logo-icon { width: 34px; height: 34px; font-size: 12px; border-radius: 10px; }
+    .mobile-logo span { font-weight: 700; font-size: 15px; color: var(--text-primary); }
 
     @media (min-width: 1024px) { .mobile-logo { display: none; } }
 
     .theme-toggle {
       position: relative;
-      width: 56px;
-      height: 32px;
-      border-radius: 16px;
+      width: 52px;
+      height: 30px;
+      border-radius: 15px;
       border: none;
       cursor: pointer;
       transition: background 0.3s ease;
       background: linear-gradient(135deg, #87ceeb 0%, #f0f9ff 100%);
+      flex-shrink: 0;
     }
 
     .dark .theme-toggle { background: linear-gradient(135deg, #1e3a5f 0%, #0f172a 100%); }
 
     .theme-toggle .sun, .theme-toggle .moon {
       position: absolute;
-      top: 4px;
+      top: 3px;
       width: 24px;
       height: 24px;
       display: flex;
@@ -208,42 +263,54 @@
       transition: all 0.3s ease;
     }
 
-    .theme-toggle .sun { left: 4px; color: #f59e0b; }
-    .theme-toggle .moon { right: 4px; color: #cbd5e1; opacity: 0; transform: rotate(-90deg) scale(0); }
+    .theme-toggle .sun { left: 3px; color: #f59e0b; }
+    .theme-toggle .moon { right: 3px; color: #cbd5e1; opacity: 0; transform: rotate(-90deg) scale(0); }
     .dark .theme-toggle .sun { opacity: 0; transform: rotate(90deg) scale(0); }
     .dark .theme-toggle .moon { opacity: 1; transform: rotate(0) scale(1); }
 
     .theme-toggle .toggle-circle {
       position: absolute;
-      top: 4px;
+      top: 3px;
       width: 24px;
       height: 24px;
       border-radius: 50%;
       background: white;
       box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       transition: left 0.3s ease;
-      left: 4px;
+      left: 3px;
     }
 
-    .dark .theme-toggle .toggle-circle { left: 28px; }
+    .dark .theme-toggle .toggle-circle { left: 25px; }
 
     /* Main Content */
-    .main-content { flex: 1; margin-left: 0; transition: margin-left 0.3s ease; }
+    .main-content { 
+      flex: 1; 
+      margin-left: 0; 
+      transition: margin-left 0.3s ease; 
+      min-width: 0;
+    }
 
     @media (min-width: 1024px) {
-      .main-content { margin-left: 288px; }
+      .main-content { margin-left: 280px; }
       .main-content.sidebar-collapsed { margin-left: 0; }
     }
 
-    .content-wrapper { max-width: 840px; margin: 0 auto; padding: 32px 24px; }
+    .content-wrapper { 
+      max-width: 820px; 
+      margin: 0 auto; 
+      padding: 24px 16px; 
+    }
 
-    @media (min-width: 768px) { .content-wrapper { padding: 48px; } }
+    @media (min-width: 768px) { 
+      .content-wrapper { padding: 40px 32px; } 
+    }
 
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(0, 0, 0, 0.5);
       backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
       z-index: 90;
       opacity: 0;
       pointer-events: none;
@@ -253,46 +320,85 @@
     .overlay.active { opacity: 1; pointer-events: auto; }
 
     /* Sections */
-    section { margin-bottom: 64px; scroll-margin-top: 100px; }
+    section { margin-bottom: 48px; scroll-margin-top: 80px; }
 
-    h2 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      letter-spacing: -0.02em;
-      color: var(--text-primary);
+    @media (min-width: 768px) {
+      section { margin-bottom: 64px; }
     }
 
-    @media (min-width: 768px) { h2 { font-size: 32px; } }
+    h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      letter-spacing: -0.02em;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
 
-    h3 { font-size: 22px; font-weight: 600; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; color: var(--text-primary); }
-    h4 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: var(--text-primary); }
+    @media (min-width: 768px) { h2 { font-size: 28px; gap: 12px; } }
 
-    p { color: var(--text-secondary); margin-bottom: 16px; line-height: 1.75; }
+    h3 { 
+      font-size: 18px; 
+      font-weight: 600; 
+      margin-bottom: 14px; 
+      margin-top: 28px;
+      display: flex; 
+      align-items: flex-start; 
+      gap: 8px; 
+      color: var(--text-primary);
+      line-height: 1.4;
+    }
+
+    @media (min-width: 768px) { h3 { font-size: 20px; } }
+
+    h4 { 
+      font-size: 15px; 
+      font-weight: 600; 
+      margin-bottom: 10px; 
+      margin-top: 20px;
+      color: var(--text-primary); 
+    }
+
+    @media (min-width: 768px) { h4 { font-size: 16px; } }
+
+    p { 
+      color: var(--text-secondary); 
+      margin-bottom: 14px; 
+      line-height: 1.75; 
+    }
 
     /* Cards */
     .card {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       border-radius: var(--radius-xl);
-      padding: 28px;
-      margin-bottom: 24px;
+      padding: 20px;
+      margin-bottom: 20px;
       transition: box-shadow 0.3s ease;
+    }
+
+    @media (min-width: 768px) {
+      .card { padding: 24px; margin-bottom: 24px; }
     }
 
     .card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
 
     /* Feature Cards */
-    .feature-grid { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 32px; }
+    .feature-grid { 
+      display: grid; 
+      grid-template-columns: 1fr; 
+      gap: 16px; 
+      margin-top: 24px; 
+    }
 
-    @media (min-width: 768px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 640px) { .feature-grid { grid-template-columns: repeat(2, 1fr); } }
 
     .feature-card {
-      padding: 28px;
-      border-radius: var(--radius-xl);
+      padding: 20px;
+      border-radius: var(--radius-lg);
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
       transition: all 0.3s ease;
@@ -306,29 +412,36 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 4px;
+      height: 3px;
       background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
       opacity: 0;
       transition: opacity 0.3s ease;
     }
 
-    .feature-card:hover { border-color: var(--accent-purple); box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15); }
+    .feature-card:hover { border-color: var(--accent-purple); box-shadow: 0 8px 24px rgba(139, 92, 246, 0.12); }
     .feature-card:hover::before { opacity: 1; }
-    .feature-card .icon { font-size: 36px; margin-bottom: 16px; }
-    .feature-card h3 { font-size: 17px; margin-bottom: 10px; }
-    .feature-card p { font-size: 14px; margin-bottom: 0; line-height: 1.6; }
+    .feature-card .icon { font-size: 28px; margin-bottom: 12px; }
+    .feature-card h3 { font-size: 15px; margin-bottom: 8px; margin-top: 0; }
+    .feature-card p { font-size: 13px; margin-bottom: 0; line-height: 1.6; }
+
+    @media (min-width: 768px) {
+      .feature-card { padding: 24px; }
+      .feature-card .icon { font-size: 32px; margin-bottom: 14px; }
+      .feature-card h3 { font-size: 16px; }
+      .feature-card p { font-size: 14px; }
+    }
 
     /* Badge */
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 20px;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 16px;
       background: var(--bg-tertiary);
       color: var(--text-muted);
-      font-size: 13px;
-      margin-bottom: 16px;
+      font-size: 12px;
+      margin-bottom: 14px;
     }
 
     .badge.purple {
@@ -337,36 +450,41 @@
     }
 
     /* Steps */
-    .steps { display: flex; flex-direction: column; gap: 20px; }
-    .step { display: flex; gap: 16px; }
+    .steps { display: flex; flex-direction: column; gap: 16px; }
+    .step { display: flex; gap: 14px; }
 
     .step-number {
       flex-shrink: 0;
-      width: 36px;
-      height: 36px;
-      border-radius: 12px;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 13px;
       box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
     }
 
-    .step-content h4 { margin-bottom: 6px; }
-    .step-content p { margin-bottom: 8px; }
+    @media (min-width: 768px) {
+      .step-number { width: 36px; height: 36px; font-size: 14px; border-radius: 12px; }
+      .step { gap: 16px; }
+    }
+
+    .step-content h4 { margin-bottom: 4px; margin-top: 0; }
+    .step-content p { margin-bottom: 6px; font-size: 14px; }
 
     /* Tags */
     .tag {
       display: inline-block;
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 6px 14px;
+      border-radius: 16px;
       background: var(--bg-tertiary);
       color: var(--text-secondary);
-      font-size: 14px;
-      margin: 4px;
+      font-size: 13px;
+      margin: 3px;
       transition: all 0.2s ease;
     }
 
@@ -377,30 +495,35 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 10px 14px;
-      border-radius: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
       background: var(--bg-tertiary);
       color: var(--text-secondary);
-      font-size: 13px;
-      margin: 4px;
+      font-size: 12px;
+      margin: 3px;
       transition: all 0.2s ease;
     }
 
     .action-btn:hover { background: var(--purple-50); color: var(--accent-purple); }
 
     /* Info Box */
-    .info-box { padding: 20px; border-radius: var(--radius-lg); margin-top: 20px; }
+    .info-box { padding: 16px; border-radius: var(--radius-md); margin-top: 16px; }
     .info-box.warning { background: var(--amber-50); border: 1px solid rgba(245, 158, 11, 0.2); }
     .info-box.info { background: var(--blue-50); border: 1px solid rgba(59, 130, 246, 0.2); }
     .info-box.success { background: var(--green-50); border: 1px solid rgba(34, 197, 94, 0.2); }
-    .info-box p { margin-bottom: 0; font-size: 14px; }
+    .info-box p { margin-bottom: 0; font-size: 13px; }
+
+    @media (min-width: 768px) {
+      .info-box { padding: 18px; margin-top: 20px; }
+      .info-box p { font-size: 14px; }
+    }
 
     /* FAQ Accordion */
     .faq-item {
       background: var(--bg-secondary);
       border: 1px solid var(--border-color);
-      border-radius: var(--radius-lg);
-      margin-bottom: 12px;
+      border-radius: var(--radius-md);
+      margin-bottom: 10px;
       overflow: hidden;
       transition: all 0.3s ease;
     }
@@ -411,40 +534,53 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 20px 24px;
+      padding: 16px 18px;
       cursor: pointer;
       background: none;
       border: none;
       width: 100%;
       text-align: left;
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 500;
       color: var(--text-primary);
       transition: background 0.2s ease;
+      gap: 12px;
     }
 
     .faq-question:hover { background: var(--bg-tertiary); }
-    .faq-question svg { flex-shrink: 0; width: 20px; height: 20px; transition: transform 0.3s ease; color: var(--text-muted); }
+    .faq-question svg { flex-shrink: 0; width: 18px; height: 18px; transition: transform 0.3s ease; color: var(--text-muted); }
     .faq-item.open .faq-question svg { transform: rotate(180deg); color: var(--accent-purple); }
 
     .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
     .faq-item.open .faq-answer { max-height: 600px; }
-    .faq-answer-content { padding: 0 24px 20px; font-size: 14px; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 16px; line-height: 1.7; }
+    .faq-answer-content { padding: 0 18px 16px; font-size: 13px; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 14px; line-height: 1.7; }
+
+    @media (min-width: 768px) {
+      .faq-item { margin-bottom: 12px; }
+      .faq-question { padding: 18px 20px; font-size: 15px; }
+      .faq-answer-content { padding: 0 20px 18px; padding-top: 16px; font-size: 14px; }
+    }
 
     /* Glossary */
-    .glossary-term { display: flex; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--border-color); }
+    .glossary-term { display: flex; flex-direction: column; gap: 6px; padding: 14px 0; border-bottom: 1px solid var(--border-color); }
     .glossary-term:last-child { border-bottom: none; }
-    .glossary-term .term { min-width: 200px; font-weight: 600; color: var(--text-primary); flex-shrink: 0; }
-    .glossary-term .definition { color: var(--text-secondary); line-height: 1.6; }
+    .glossary-term .term { font-weight: 600; color: var(--text-primary); font-size: 14px; }
+    .glossary-term .definition { color: var(--text-secondary); line-height: 1.6; font-size: 13px; }
+
+    @media (min-width: 640px) {
+      .glossary-term { flex-direction: row; gap: 16px; padding: 16px 0; }
+      .glossary-term .term { min-width: 180px; flex-shrink: 0; }
+      .glossary-term .definition { font-size: 14px; }
+    }
 
     /* Scroll to top */
     .scroll-top {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      width: 52px;
-      height: 52px;
-      border-radius: 16px;
+      bottom: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
       background: linear-gradient(135deg, #6366f1, #8b5cf6);
       color: white;
       border: none;
@@ -459,66 +595,110 @@
       z-index: 80;
     }
 
+    @media (min-width: 768px) {
+      .scroll-top { bottom: 24px; right: 24px; width: 52px; height: 52px; border-radius: 16px; }
+    }
+
     .scroll-top.visible { opacity: 1; transform: translateY(0); }
     .scroll-top:hover { transform: scale(1.1); box-shadow: 0 6px 24px rgba(139, 92, 246, 0.5); }
 
-    footer { padding: 32px; border-top: 1px solid var(--border-color); text-align: center; color: var(--text-muted); font-size: 14px; }
+    footer { 
+      padding: 24px 16px; 
+      border-top: 1px solid var(--border-color); 
+      text-align: center; 
+      color: var(--text-muted); 
+      font-size: 13px; 
+      line-height: 1.6;
+    }
 
-    ul, ol { margin-left: 24px; margin-bottom: 16px; color: var(--text-secondary); }
-    li { margin-bottom: 10px; line-height: 1.6; }
+    @media (min-width: 768px) {
+      footer { padding: 32px; font-size: 14px; }
+    }
 
-    code { font-family: 'SF Mono', Monaco, 'Courier New', monospace; font-size: 13px; background: var(--bg-tertiary); padding: 3px 8px; border-radius: 6px; color: var(--accent-purple); }
+    ul, ol { margin-left: 20px; margin-bottom: 14px; color: var(--text-secondary); }
+    li { margin-bottom: 8px; line-height: 1.6; font-size: 14px; }
+
+    @media (min-width: 768px) {
+      ul, ol { margin-left: 24px; margin-bottom: 16px; }
+      li { margin-bottom: 10px; font-size: 15px; }
+    }
+
+    code { 
+      font-family: 'SF Mono', Monaco, 'Courier New', monospace; 
+      font-size: 12px; 
+      background: var(--bg-tertiary); 
+      padding: 2px 6px; 
+      border-radius: 4px; 
+      color: var(--accent-purple); 
+    }
+
+    @media (min-width: 768px) {
+      code { font-size: 13px; padding: 3px 8px; border-radius: 6px; }
+    }
+
     strong { color: var(--text-primary); }
 
-    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 768px) { .grid-2 { grid-template-columns: repeat(2, 1fr); } }
+    .grid-2 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 640px) { .grid-2 { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
 
-    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    @media (min-width: 768px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+    .grid-3 { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 640px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
 
     /* Hero */
-    .hero { text-align: center; margin-bottom: 64px; }
+    .hero { text-align: center; margin-bottom: 40px; }
+
+    @media (min-width: 768px) {
+      .hero { margin-bottom: 64px; }
+    }
 
     .hero-badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 8px 20px;
-      border-radius: 24px;
+      padding: 6px 16px;
+      border-radius: 20px;
       background: linear-gradient(135deg, var(--purple-50), var(--blue-50));
       color: var(--accent-purple);
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 600;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
       border: 1px solid rgba(139, 92, 246, 0.1);
     }
 
-    .hero-badge .dot { width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #a855f7); animation: pulse 2s infinite; }
+    @media (min-width: 768px) {
+      .hero-badge { padding: 8px 20px; font-size: 14px; margin-bottom: 28px; }
+    }
+
+    .hero-badge .dot { width: 7px; height: 7px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #a855f7); animation: pulse 2s infinite; }
 
     @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
-    .hero h1 { font-size: 40px; font-weight: 800; margin-bottom: 16px; letter-spacing: -0.03em; }
-    @media (min-width: 768px) { .hero h1 { font-size: 52px; } }
-    @media (min-width: 1024px) { .hero h1 { font-size: 64px; } }
+    .hero h1 { font-size: 32px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.02em; line-height: 1.2; }
+    @media (min-width: 640px) { .hero h1 { font-size: 40px; } }
+    @media (min-width: 768px) { .hero h1 { font-size: 48px; } }
+    @media (min-width: 1024px) { .hero h1 { font-size: 56px; } }
 
     .hero h1 .gradient { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero h1 .edition { font-size: 24px; font-weight: 600; display: block; margin-top: 8px; }
-    @media (min-width: 768px) { .hero h1 .edition { font-size: 32px; } }
+    .hero h1 .edition { font-size: 18px; font-weight: 600; display: block; margin-top: 6px; }
+    @media (min-width: 640px) { .hero h1 .edition { font-size: 22px; } }
+    @media (min-width: 768px) { .hero h1 .edition { font-size: 26px; } }
 
-    .hero .subtitle { font-size: 20px; color: var(--text-secondary); max-width: 640px; margin: 0 auto; line-height: 1.6; }
+    .hero .subtitle { font-size: 16px; color: var(--text-secondary); max-width: 560px; margin: 0 auto; line-height: 1.6; }
+    @media (min-width: 768px) { .hero .subtitle { font-size: 18px; } }
 
     /* Menu buttons */
     .menu-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
-      border-radius: var(--radius-lg);
+      padding: 16px;
+      border-radius: var(--radius-md);
       background: var(--bg-tertiary);
       text-align: center;
       transition: all 0.2s ease;
@@ -526,36 +706,57 @@
     }
 
     .menu-btn:hover { background: var(--purple-50); border-color: rgba(139, 92, 246, 0.2); }
-    .menu-btn .icon { font-size: 28px; margin-bottom: 10px; }
-    .menu-btn .label { font-weight: 600; color: var(--text-primary); font-size: 14px; }
-    .menu-btn .desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .menu-btn .icon { font-size: 24px; margin-bottom: 8px; }
+    .menu-btn .label { font-weight: 600; color: var(--text-primary); font-size: 13px; }
+    .menu-btn .desc { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    @media (min-width: 768px) {
+      .menu-btn { padding: 20px; border-radius: var(--radius-lg); }
+      .menu-btn .icon { font-size: 28px; margin-bottom: 10px; }
+      .menu-btn .label { font-size: 14px; }
+      .menu-btn .desc { font-size: 12px; }
+    }
 
     /* Tables */
-    .table-wrapper { overflow-x: auto; margin: 20px 0; }
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid var(--border-color); }
-    th { background: var(--bg-tertiary); font-weight: 600; color: var(--text-primary); font-size: 13px; text-transform: uppercase; letter-spacing: 0.02em; }
+    .table-wrapper { overflow-x: auto; margin: 16px 0; -webkit-overflow-scrolling: touch; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 500px; }
+    th, td { padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--border-color); }
+    th { background: var(--bg-tertiary); font-weight: 600; color: var(--text-primary); font-size: 11px; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; }
     td { color: var(--text-secondary); }
     tr:hover td { background: var(--bg-tertiary); }
 
+    @media (min-width: 768px) {
+      table { font-size: 14px; }
+      th, td { padding: 14px 18px; }
+      th { font-size: 12px; }
+    }
+
     /* Category badges */
-    .category-badge { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+    .category-badge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 12px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; white-space: nowrap; }
     .category-diamond { background: linear-gradient(135deg, #fbbf24, #f59e0b); color: white; }
     .category-top { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
     .category-expert { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
     .category-active { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
     .category-newbie { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
 
+    @media (min-width: 768px) {
+      .category-badge { padding: 6px 14px; font-size: 12px; gap: 6px; }
+    }
+
     /* Z-score indicators */
-    .z-indicator { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 600; }
+    .z-indicator { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; margin: 2px 0; }
     .z-excellent { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
     .z-good { background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; }
     .z-normal { background: linear-gradient(135deg, #6b7280, #4b5563); color: white; }
     .z-below { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
     .z-critical { background: linear-gradient(135deg, #ef4444, #dc2626); color: white; }
 
+    @media (min-width: 768px) {
+      .z-indicator { padding: 4px 10px; font-size: 13px; }
+    }
+
     /* SMART specific */
-    .smart-metric { padding: 20px; border-radius: var(--radius-lg); margin-bottom: 12px; border: 1px solid transparent; transition: all 0.2s ease; }
+    .smart-metric { padding: 14px; border-radius: var(--radius-md); margin-bottom: 10px; border: 1px solid transparent; transition: all 0.2s ease; font-size: 13px; }
     .smart-metric:hover { border-color: rgba(139, 92, 246, 0.2); }
     .smart-metric.blue { background: var(--blue-50); }
     .smart-metric.purple { background: var(--purple-50); }
@@ -564,36 +765,60 @@
     .smart-metric.cyan { background: var(--cyan-50); }
     .smart-metric.pink { background: var(--pink-50); }
 
+    @media (min-width: 768px) {
+      .smart-metric { padding: 16px 20px; font-size: 14px; }
+    }
+
     /* Inline boxes */
-    .box-blue { background: var(--blue-50); border-radius: var(--radius-lg); padding: 20px; margin: 16px 0; border: 1px solid rgba(59, 130, 246, 0.1); }
-    .box-green { background: var(--green-50); border-radius: var(--radius-lg); padding: 20px; margin: 16px 0; border: 1px solid rgba(34, 197, 94, 0.1); }
-    .box-purple { background: var(--purple-50); border-radius: var(--radius-lg); padding: 20px; margin: 16px 0; border: 1px solid rgba(139, 92, 246, 0.1); }
-    .box-orange { background: var(--orange-50); border-radius: var(--radius-lg); padding: 20px; margin: 16px 0; border: 1px solid rgba(249, 115, 22, 0.1); }
-    .box-cyan { background: var(--cyan-50); border-radius: var(--radius-lg); padding: 20px; margin: 16px 0; border: 1px solid rgba(6, 182, 212, 0.1); }
-    .box-pink { background: var(--pink-50); border-radius: var(--radius-lg); padding: 20px; margin: 16px 0; border: 1px solid rgba(236, 72, 153, 0.1); }
+    .box-blue { background: var(--blue-50); border-radius: var(--radius-md); padding: 14px; margin: 12px 0; border: 1px solid rgba(59, 130, 246, 0.1); }
+    .box-green { background: var(--green-50); border-radius: var(--radius-md); padding: 14px; margin: 12px 0; border: 1px solid rgba(34, 197, 94, 0.1); }
+    .box-purple { background: var(--purple-50); border-radius: var(--radius-md); padding: 14px; margin: 12px 0; border: 1px solid rgba(139, 92, 246, 0.1); }
+    .box-orange { background: var(--orange-50); border-radius: var(--radius-md); padding: 14px; margin: 12px 0; border: 1px solid rgba(249, 115, 22, 0.1); }
+    .box-cyan { background: var(--cyan-50); border-radius: var(--radius-md); padding: 14px; margin: 12px 0; border: 1px solid rgba(6, 182, 212, 0.1); }
+    .box-pink { background: var(--pink-50); border-radius: var(--radius-md); padding: 14px; margin: 12px 0; border: 1px solid rgba(236, 72, 153, 0.1); }
 
-    .box-blue h4, .box-green h4, .box-purple h4, .box-orange h4, .box-cyan h4, .box-pink h4 { margin-bottom: 8px; }
-    .box-blue p, .box-green p, .box-purple p, .box-orange p, .box-cyan p, .box-pink p { margin-bottom: 0; font-size: 14px; }
+    .box-blue h4, .box-green h4, .box-purple h4, .box-orange h4, .box-cyan h4, .box-pink h4 { margin-bottom: 6px; margin-top: 0; font-size: 14px; }
+    .box-blue p, .box-green p, .box-purple p, .box-orange p, .box-cyan p, .box-pink p { margin-bottom: 0; font-size: 13px; }
 
-    /* Problem/Solution Cards */
-    .problem-card { display: flex; align-items: flex-start; gap: 16px; padding: 16px 20px; border-radius: var(--radius-lg); background: var(--red-50); margin-bottom: 12px; border: 1px solid rgba(239, 68, 68, 0.1); }
-    .solution-card { display: flex; align-items: flex-start; gap: 16px; padding: 16px 20px; border-radius: var(--radius-lg); background: var(--green-50); margin-bottom: 12px; border: 1px solid rgba(34, 197, 94, 0.1); }
-    .problem-card p, .solution-card p { margin-bottom: 0; font-size: 14px; }
-
-    /* Admin Panel */
-    .admin-card {
-      background: linear-gradient(135deg, var(--amber-50), var(--orange-50));
-      border: 1px solid rgba(245, 158, 11, 0.2);
+    @media (min-width: 768px) {
+      .box-blue, .box-green, .box-purple, .box-orange, .box-cyan, .box-pink { padding: 18px 20px; margin: 16px 0; border-radius: var(--radius-lg); }
+      .box-blue h4, .box-green h4, .box-purple h4, .box-orange h4, .box-cyan h4, .box-pink h4 { font-size: 15px; margin-bottom: 8px; }
+      .box-blue p, .box-green p, .box-purple p, .box-orange p, .box-cyan p, .box-pink p { font-size: 14px; }
     }
 
     /* TOC */
-    .toc { background: var(--bg-tertiary); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 32px; }
-    .toc h3 { margin-bottom: 16px; font-size: 18px; }
+    .toc { background: var(--bg-tertiary); border-radius: var(--radius-lg); padding: 20px; margin-bottom: 24px; }
+    .toc h3 { margin-bottom: 14px; font-size: 16px; margin-top: 0; }
     .toc-list { list-style: none; margin: 0; padding: 0; }
-    .toc-list li { margin-bottom: 8px; }
-    .toc-list a { color: var(--text-secondary); text-decoration: none; font-size: 14px; transition: color 0.2s ease; }
+    .toc-list li { margin-bottom: 6px; }
+    .toc-list a { color: var(--text-secondary); text-decoration: none; font-size: 13px; transition: color 0.2s ease; display: block; padding: 4px 0; }
     .toc-list a:hover { color: var(--accent-purple); }
-    .toc-list .toc-number { color: var(--text-muted); margin-right: 8px; }
+    .toc-list .toc-number { color: var(--text-muted); margin-right: 6px; }
+
+    @media (min-width: 768px) {
+      .toc { padding: 24px; margin-bottom: 32px; border-radius: var(--radius-xl); }
+      .toc h3 { font-size: 18px; margin-bottom: 16px; }
+      .toc-list a { font-size: 14px; }
+    }
+
+    /* Content heading for visual hierarchy */
+    .section-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      font-weight: 700;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 768px) {
+      .section-number { width: 32px; height: 32px; font-size: 13px; border-radius: 10px; }
+    }
   </style>
 </head>
 <body>
@@ -625,136 +850,119 @@
         </a>
 
         <div class="nav-group">
-          <button class="nav-item" onclick="toggleNav(this)" data-section="smart-system">
-            <span class="icon">🧠</span>
-            <span>SMART-система</span>
+          <button class="nav-item" onclick="toggleNav(this)" data-section="search-tutor">
+            <span class="icon">🔍</span>
+            <span>Поиск репетитора</span>
             <span class="arrow">▶</span>
           </button>
           <div class="nav-children">
-            <a href="#smart-rating" class="nav-item nav-child" data-section="smart-rating">
-              <span class="icon">📊</span>
-              <span>SMART-рейтинг</span>
+            <a href="#search-step-by-step" class="nav-item nav-child" data-section="search-step-by-step">
+              <span>Пошаговый поиск</span>
             </a>
-            <a href="#z-scores" class="nav-item nav-child" data-section="z-scores">
-              <span class="icon">🎯</span>
-              <span>Z-оценки и процентили</span>
+            <a href="#search-results" class="nav-item nav-child" data-section="search-results">
+              <span>Результаты поиска</span>
             </a>
-            <a href="#categories" class="nav-item nav-child" data-section="categories">
-              <span class="icon">🏆</span>
-              <span>Категории репетиторов</span>
+            <a href="#tutor-card" class="nav-item nav-child" data-section="tutor-card">
+              <span>Карточка репетитора</span>
+            </a>
+            <a href="#tutor-actions" class="nav-item nav-child" data-section="tutor-actions">
+              <span>Действия в профиле</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <button class="nav-item" onclick="toggleNav(this)" data-section="smart-search">
+            <span class="icon">🧠</span>
+            <span>SMART-поиск</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="nav-children">
+            <a href="#smart-filters" class="nav-item nav-child" data-section="smart-filters">
+              <span>SMART-фильтры</span>
+            </a>
+            <a href="#smart-search-usage" class="nav-item nav-child" data-section="smart-search-usage">
+              <span>Как использовать</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <button class="nav-item" onclick="toggleNav(this)" data-section="tests">
+            <span class="icon">📚</span>
+            <span>Тесты и диагностика</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="nav-children">
+            <a href="#test-types" class="nav-item nav-child" data-section="test-types">
+              <span>Типы тестов</span>
+            </a>
+            <a href="#test-passing" class="nav-item nav-child" data-section="test-passing">
+              <span>Прохождение теста</span>
+            </a>
+            <a href="#test-results" class="nav-item nav-child" data-section="test-results">
+              <span>Результаты</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="nav-group">
+          <button class="nav-item" onclick="toggleNav(this)" data-section="favorites">
+            <span class="icon">⭐</span>
+            <span>Избранное</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="nav-children">
+            <a href="#add-favorites" class="nav-item nav-child" data-section="add-favorites">
+              <span>Добавление</span>
+            </a>
+            <a href="#view-favorites" class="nav-item nav-child" data-section="view-favorites">
+              <span>Просмотр</span>
+            </a>
+            <a href="#compare-tutors" class="nav-item nav-child" data-section="compare-tutors">
+              <span>Сравнение</span>
+            </a>
+          </div>
+        </div>
+
+        <a href="#smart-tops" class="nav-item" data-section="smart-tops">
+          <span class="icon">🏆</span>
+          <span>SMART-топы</span>
+        </a>
+
+        <a href="#platform-stats" class="nav-item" data-section="platform-stats">
+          <span class="icon">📈</span>
+          <span>Статистика платформы</span>
+        </a>
+
+        <div class="nav-group">
+          <button class="nav-item" onclick="toggleNav(this)" data-section="smart-metrics">
+            <span class="icon">📊</span>
+            <span>SMART-метрики</span>
+            <span class="arrow">▶</span>
+          </button>
+          <div class="nav-children">
+            <a href="#z-score" class="nav-item nav-child" data-section="z-score">
+              <span>Z-оценка</span>
+            </a>
+            <a href="#percentile" class="nav-item nav-child" data-section="percentile">
+              <span>Процентиль</span>
+            </a>
+            <a href="#smart-category" class="nav-item nav-child" data-section="smart-category">
+              <span>Категория SMART</span>
             </a>
             <a href="#differentiation" class="nav-item nav-child" data-section="differentiation">
-              <span class="icon">📐</span>
-              <span>Дифференцирующая способность</span>
+              <span>Дифф. способность</span>
+            </a>
+            <a href="#dynamic-weights" class="nav-item nav-child" data-section="dynamic-weights">
+              <span>Динамические веса</span>
             </a>
           </div>
         </div>
 
-        <div class="nav-group">
-          <button class="nav-item" onclick="toggleNav(this)" data-section="student-features">
-            <span class="icon">👨‍🎓</span>
-            <span>Для учеников</span>
-            <span class="arrow">▶</span>
-          </button>
-          <div class="nav-children">
-            <a href="#student-menu" class="nav-item nav-child" data-section="student-menu">
-              <span class="icon">📋</span>
-              <span>Главное меню</span>
-            </a>
-            <a href="#search-tutor" class="nav-item nav-child" data-section="search-tutor">
-              <span class="icon">🔍</span>
-              <span>Поиск репетитора</span>
-            </a>
-            <a href="#smart-search" class="nav-item nav-child" data-section="smart-search">
-              <span class="icon">🧠</span>
-              <span>SMART-поиск</span>
-            </a>
-            <a href="#tests" class="nav-item nav-child" data-section="tests">
-              <span class="icon">📚</span>
-              <span>Тесты и диагностика</span>
-            </a>
-            <a href="#favorites" class="nav-item nav-child" data-section="favorites">
-              <span class="icon">⭐</span>
-              <span>Избранное и сравнение</span>
-            </a>
-            <a href="#smart-tops" class="nav-item nav-child" data-section="smart-tops">
-              <span class="icon">🏆</span>
-              <span>SMART-топы недели</span>
-            </a>
-            <a href="#tutor-profile-view" class="nav-item nav-child" data-section="tutor-profile-view">
-              <span class="icon">👤</span>
-              <span>Профиль репетитора</span>
-            </a>
-            <a href="#platform-stats" class="nav-item nav-child" data-section="platform-stats">
-              <span class="icon">📈</span>
-              <span>Статистика платформы</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="nav-group">
-          <button class="nav-item" onclick="toggleNav(this)" data-section="tutor-features">
-            <span class="icon">👨‍🏫</span>
-            <span>Для репетиторов</span>
-            <span class="arrow">▶</span>
-          </button>
-          <div class="nav-children">
-            <a href="#tutor-registration" class="nav-item nav-child" data-section="tutor-registration">
-              <span class="icon">📝</span>
-              <span>Регистрация</span>
-            </a>
-            <a href="#students-management" class="nav-item nav-child" data-section="students-management">
-              <span class="icon">👨‍🎓</span>
-              <span>Управление учениками</span>
-            </a>
-            <a href="#materials-bank" class="nav-item nav-child" data-section="materials-bank">
-              <span class="icon">📚</span>
-              <span>Банк тем и материалы</span>
-            </a>
-            <a href="#tasks-management" class="nav-item nav-child" data-section="tasks-management">
-              <span class="icon">📝</span>
-              <span>Задания</span>
-            </a>
-            <a href="#sessions-planning" class="nav-item nav-child" data-section="sessions-planning">
-              <span class="icon">📅</span>
-              <span>Планирование занятий</span>
-            </a>
-            <a href="#analytics" class="nav-item nav-child" data-section="analytics">
-              <span class="icon">📊</span>
-              <span>Аналитика</span>
-            </a>
-            <a href="#tutor-smart" class="nav-item nav-child" data-section="tutor-smart">
-              <span class="icon">🏆</span>
-              <span>SMART-рейтинг</span>
-            </a>
-            <a href="#profile-management" class="nav-item nav-child" data-section="profile-management">
-              <span class="icon">⚙️</span>
-              <span>Управление профилем</span>
-            </a>
-          </div>
-        </div>
-
-        <div class="nav-group">
-          <button class="nav-item" onclick="toggleNav(this)" data-section="common-features">
-            <span class="icon">🔧</span>
-            <span>Общие функции</span>
-            <span class="arrow">▶</span>
-          </button>
-          <div class="nav-children">
-            <a href="#help-system" class="nav-item nav-child" data-section="help-system">
-              <span class="icon">❓</span>
-              <span>Система помощи</span>
-            </a>
-            <a href="#smart-guide" class="nav-item nav-child" data-section="smart-guide">
-              <span class="icon">🧠</span>
-              <span>SMART-руководство</span>
-            </a>
-          </div>
-        </div>
-
-        <a href="#automatic-smart-system" class="nav-item" data-section="automatic-smart-system">
-          <span class="icon">⚙️</span>
-          <span>Автоматическая SMART-система</span>
+        <a href="#common-functions" class="nav-item" data-section="common-functions">
+          <span class="icon">🔧</span>
+          <span>Общие функции</span>
         </a>
 
         <a href="#faq" class="nav-item" data-section="faq">
@@ -764,12 +972,12 @@
 
         <a href="#glossary" class="nav-item" data-section="glossary">
           <span class="icon">📖</span>
-          <span>Глоссарий терминов</span>
+          <span>Глоссарий</span>
         </a>
       </nav>
 
       <div class="sidebar-footer">
-        Версия 2.0 • Март 2026
+        Версия 1.0 • Март 2026
       </div>
     </aside>
 
@@ -810,588 +1018,533 @@
         <section class="hero">
           <div class="hero-badge">
             <span class="dot"></span>
-            Версия 2.0 • Март 2026
+            Версия 1.0 • Март 2026
           </div>
           <h1>
             ПРОГРЕСС+
             <span class="gradient">SMART Edition</span>
           </h1>
-          <p class="subtitle">Интеллектуальная платформа в Telegram для поиска репетиторов и организации эффективного обучения</p>
+          <p class="subtitle">Интеллектуальный Telegram-бот для поиска репетиторов на основе объективных данных</p>
         </section>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+          <h3>📋 Содержание</h3>
+          <ul class="toc-list">
+            <li><a href="#introduction"><span class="toc-number">1.</span>Введение</a></li>
+            <li><a href="#quick-start"><span class="toc-number">2.</span>Быстрый старт</a></li>
+            <li><a href="#search-tutor"><span class="toc-number">3.</span>Поиск репетитора</a></li>
+            <li><a href="#smart-search"><span class="toc-number">4.</span>SMART-поиск</a></li>
+            <li><a href="#tests"><span class="toc-number">5.</span>Тесты и диагностика</a></li>
+            <li><a href="#favorites"><span class="toc-number">6.</span>Избранное и сравнение</a></li>
+            <li><a href="#smart-tops"><span class="toc-number">7.</span>SMART-топы</a></li>
+            <li><a href="#platform-stats"><span class="toc-number">8.</span>Статистика платформы</a></li>
+            <li><a href="#smart-metrics"><span class="toc-number">9.</span>Понимание SMART-метрик</a></li>
+            <li><a href="#common-functions"><span class="toc-number">10.</span>Общие функции</a></li>
+            <li><a href="#faq"><span class="toc-number">11.</span>Часто задаваемые вопросы</a></li>
+            <li><a href="#glossary"><span class="toc-number">12.</span>Глоссарий терминов</a></li>
+          </ul>
+        </div>
 
         <!-- Introduction -->
         <section id="introduction" data-section="introduction">
-          <h2><span>👋</span> Введение: Что такое ПРОГРЕСС+ и зачем он нужен</h2>
+          <h2><span class="section-number">1</span>Введение: Что такое ПРОГРЕСС+ SMART Edition</h2>
 
-          <p><strong>ПРОГРЕСС+ SMART Edition</strong> — это интеллектуальная платформа в Telegram для поиска репетиторов и организации эффективного обучения. В отличие от обычных досок объявлений, ПРОГРЕСС+ использует объективные статистические данные для оценки работы преподавателей и помогает ученикам делать осознанный выбор.</p>
+          <p><strong>ПРОГРЕСС+ SMART Edition</strong> — это интеллектуальный Telegram-бот, который помогает ученикам и их родителям находить лучших репетиторов на основе объективных данных, а не субъективных отзывов.</p>
 
-          <h3>Какую проблему решает ПРОГРЕСС+?</h3>
+          <h3>Какую проблему решает бот?</h3>
 
-          <div class="table-wrapper">
-            <table>
-              <thead>
-                <tr>
-                  <th>Проблема</th>
-                  <th>Решение от ПРОГРЕСС+</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Сложно выбрать репетитора — все обещают идеальный результат</td>
-                  <td>Объективные SMART-метрики показывают реальную эффективность каждого преподавателя</td>
-                </tr>
-                <tr>
-                  <td>Нет единого пространства для учёбы</td>
-                  <td>Все материалы, задания и расписание в одном месте — в Telegram</td>
-                </tr>
-                <tr>
-                  <td>Репетитор тратит время на ручные напоминания</td>
-                  <td>Автоматические уведомления о занятиях и дедлайнах</td>
-                </tr>
-                <tr>
-                  <td>Непонятно, какой прогресс у ученика</td>
-                  <td>Детальная аналитика по каждому ученику и предмету</td>
-                </tr>
-                <tr>
-                  <td>Репетитор не знает, как улучшить свои показатели</td>
-                  <td>SMART-рейтинг показывает слабые и сильные стороны</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <p>Традиционные платформы для поиска репетиторов полагаются на отзывы, которые можно купить, и анкеты, которые можно приукрасить. В результате ученики тратят время и деньги на преподавателей, чьи реальные результаты далеки от обещанных.</p>
+
+          <p><strong>ПРОГРЕСС+ устраняет эту неопределённость.</strong> Мы не спрашиваем репетиторов, какие они хорошие — мы наблюдаем за их работой. Система автоматически собирает статистику:</p>
+
+          <ul>
+            <li>✅ Как часто ученики выполняют задания до конца</li>
+            <li>⏱️ Как быстро репетитор проверяет работы</li>
+            <li>👥 Сколько учеников занимается с ним прямо сейчас</li>
+            <li>📚 Сколько учебных материалов он создал и открыл для сообщества</li>
+          </ul>
+
+          <p>Все эти показатели проходят через <strong>статистическую нормализацию (Z-оценки)</strong> и превращаются в единый SMART-рейтинг от 0 до 100. Чем выше рейтинг, тем лучше репетитор по сравнению с коллегами в своей дисциплине.</p>
 
           <h3>Ключевые возможности</h3>
 
           <div class="feature-grid">
             <div class="feature-card">
-              <div class="icon">👨‍🎓</div>
-              <h3>Для учеников</h3>
-              <p>🔍 Поиск репетиторов по объективным критериям<br>
-              🧠 SMART-поиск с фильтрацией по метрикам<br>
-              📚 Диагностические тесты для определения уровня<br>
-              ⭐ Избранное и сравнение репетиторов<br>
-              🏆 Еженедельные SMART-топы</p>
+              <div class="icon">🔍</div>
+              <h3>Обычный поиск</h3>
+              <p>Пошаговый подбор по предмету, цели, уровню, возрасту, формату и бюджету</p>
             </div>
             <div class="feature-card">
-              <div class="icon">👨‍🏫</div>
-              <h3>Для репетиторов</h3>
-              <p>👤 Полноценный кабинет для управления учениками<br>
-              📚 Банк тем и учебных материалов<br>
-              📝 Создание и проверка заданий<br>
-              📅 Планирование занятий<br>
-              📊 Детальная аналитика успеваемости<br>
-              🏆 Участие в SMART-рейтингах и топах</p>
+              <div class="icon">🧠</div>
+              <h3>SMART-поиск</h3>
+              <p>Расширенный поиск с фильтрацией по категориям, Z-оценкам, дифференцирующей способности и динамике роста</p>
             </div>
+            <div class="feature-card">
+              <div class="icon">📚</div>
+              <h3>Тесты и диагностика</h3>
+              <p>Помогают определить подходящее направление и уровень подготовки</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">⭐</div>
+              <h3>Избранное</h3>
+              <p>Сохраняйте понравившихся репетиторов и сравнивайте их по SMART-метрикам</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">🏆</div>
+              <h3>SMART-топы</h3>
+              <p>Еженедельные рейтинги лучших преподавателей в пяти номинациях</p>
+            </div>
+            <div class="feature-card">
+              <div class="icon">📈</div>
+              <h3>Статистика платформы</h3>
+              <p>Общая информация о системе и её показателях</p>
+            </div>
+          </div>
+
+          <div class="info-box info">
+            <p><strong>💡 Бот полностью бесплатен</strong> и работает прямо в Telegram. Достаточно открыть <a href="https://t.me/progress_plus_bot" style="color: var(--accent-purple);">@progress_plus_bot</a> и нажать «Start».</p>
           </div>
         </section>
 
         <!-- Quick Start -->
         <section id="quick-start" data-section="quick-start">
-          <h2><span>🚀</span> Быстрый старт: Первый вход и регистрация</h2>
-
-          <h3><span>👨‍🎓</span> Для учеников</h3>
+          <h2><span class="section-number">2</span>Быстрый старт: первый вход и знакомство с ботом</h2>
 
           <div class="card">
             <div class="steps">
               <div class="step">
                 <div class="step-number">1</div>
                 <div class="step-content">
-                  <h4>Начало</h4>
-                  <p>Перейдите по ссылке на бота и отправьте команду <code>/start</code>.</p>
+                  <h4>Начало работы</h4>
+                  <p>Перейдите по ссылке <a href="https://t.me/progress_plus_bot" style="color: var(--accent-purple);">@progress_plus_bot</a> и отправьте команду <code>/start</code>.</p>
                 </div>
               </div>
               <div class="step">
                 <div class="step-number">2</div>
-                <div class="step-content">
-                  <h4>Выбор роли</h4>
-                  <p>Нажмите кнопку <strong>«👨‍🎓 Я ученик»</strong>.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                  <h4>Пропуск токена</h4>
-                  <p>Если у вас ещё нет токена от репетитора, просто проигнорируйте запрос — вы всё равно можете пользоваться ботом: искать репетиторов, проходить тесты, изучать топы. Токен понадобится позже, когда вы найдёте преподавателя.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">4</div>
                 <div class="step-content">
                   <h4>Главное меню</h4>
-                  <p>После регистрации вы увидите главное меню ученика с доступом ко всем функциям.</p>
+                  <p>Бот покажет приветственное сообщение и главное меню с кнопками.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <h3><span>👨‍🏫</span> Для репетиторов</h3>
+          <h3>Кнопки главного меню</h3>
 
-          <div class="card">
-            <div class="steps">
-              <div class="step">
-                <div class="step-number">1</div>
-                <div class="step-content">
-                  <h4>Начало</h4>
-                  <p>Отправьте команду <code>/start</code>.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">2</div>
-                <div class="step-content">
-                  <h4>Выбор роли</h4>
-                  <p>Нажмите кнопку <strong>«👨‍🏫 Я репетитор»</strong>.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">3</div>
-                <div class="step-content">
-                  <h4>Ввод ФИО</h4>
-                  <p>Укажите полное имя (Фамилия Имя Отчество).</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">4</div>
-                <div class="step-content">
-                  <h4>Выбор дисциплин</h4>
-                  <p>Выберите предметы, которые вы преподаёте (можно несколько).</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">5</div>
-                <div class="step-content">
-                  <h4>Настройка направлений</h4>
-                  <p>Для каждой дисциплины добавьте специализацию (например, для "Информатики" — "Python", "Golang", "ОГЭ"). Это структурирует учеников и темы. Можно пропустить.</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">6</div>
-                <div class="step-content">
-                  <h4>Указание локации</h4>
-                  <p>Выберите город (для определения часового пояса).</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">7</div>
-                <div class="step-content">
-                  <h4>Контакты и «О себе»</h4>
-                  <p>Укажите телефон, Telegram, email для связи. Напишите о своём опыте (можно пропустить).</p>
-                </div>
-              </div>
-              <div class="step">
-                <div class="step-number">8</div>
-                <div class="step-content">
-                  <h4>Проверка и готово!</h4>
-                  <p>Подтвердите введённую информацию. Вы в главном меню репетитора.</p>
-                </div>
-              </div>
+          <div class="grid-2">
+            <div class="menu-btn">
+              <span class="icon">🔍</span>
+              <span class="label">Найти репетитора</span>
+              <span class="desc">Обычный пошаговый поиск</span>
             </div>
+            <div class="menu-btn">
+              <span class="icon">🧠</span>
+              <span class="label">SMART-поиск</span>
+              <span class="desc">Расширенный поиск по метрикам</span>
+            </div>
+            <div class="menu-btn">
+              <span class="icon">🏆</span>
+              <span class="label">Лучшие по дисциплинам</span>
+              <span class="desc">Топы репетиторов</span>
+            </div>
+            <div class="menu-btn">
+              <span class="icon">🔥</span>
+              <span class="label">SMART-топы недели</span>
+              <span class="desc">5 специальных рейтингов</span>
+            </div>
+            <div class="menu-btn">
+              <span class="icon">📚</span>
+              <span class="label">Тесты и диагностика</span>
+              <span class="desc">Профориентация и проверка знаний</span>
+            </div>
+            <div class="menu-btn">
+              <span class="icon">⭐</span>
+              <span class="label">Избранное</span>
+              <span class="desc">Сохранённые репетиторы</span>
+            </div>
+            <div class="menu-btn">
+              <span class="icon">📈</span>
+              <span class="label">Статистика платформы</span>
+              <span class="desc">Общая информация о системе</span>
+            </div>
+            <div class="menu-btn">
+              <span class="icon">🧭</span>
+              <span class="label">SMART-руководство</span>
+              <span class="desc">Подробное объяснение метрик</span>
+            </div>
+          </div>
 
-            <div class="info-box info">
-              <p><strong>💡 Важно:</strong> Для появления в результатах поиска и формирования SMART-рейтинга репетитору необходимо активно использовать функционал бота: создавать темы и материалы, выдавать задания, проверять их.</p>
-            </div>
+          <div class="info-box success">
+            <p><strong>✅ Никакой регистрации не требуется</strong> — вы сразу можете начинать поиск.</p>
           </div>
         </section>
 
-        <!-- SMART System -->
-        <section id="smart-system" data-section="smart-system">
-          <h2><span>🧠</span> SMART-система: Как это работает</h2>
+        <!-- Section 3: Search Tutor -->
+        <section id="search-tutor" data-section="search-tutor">
+          <h2><span class="section-number">3</span>Раздел 1: Поиск репетитора</h2>
 
-          <p>SMART-система — это «мозг» ПРОГРЕСС+. Она собирает данные о работе каждого репетитора, анализирует их и превращает в понятные метрики, которые помогают ученикам делать осознанный выбор.</p>
-
-          <!-- SMART Rating -->
-          <div id="smart-rating" data-section="smart-rating">
-            <h3><span>📊</span> Что такое SMART-рейтинг?</h3>
+          <!-- 3.1 Step-by-step Search -->
+          <div id="search-step-by-step" data-section="search-step-by-step">
+            <h3><span>📋</span> 3.1. Обычный пошаговый поиск</h3>
 
             <div class="card">
-              <p>SMART-рейтинг — это комплексная оценка репетитора от 0 до 100, которая складывается из пяти базовых метрик:</p>
-
-              <div class="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Метрика</th>
-                      <th>Что измеряет</th>
-                      <th>Влияние на рейтинг</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Процент выполнения заданий</strong></td>
-                      <td>Доля заданий, успешно выполненных учениками (завершённых, не возвращённых на доработку)</td>
-                      <td>Прямое: чем выше, тем лучше</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Среднее время проверки</strong></td>
-                      <td>Как быстро репетитор проверяет сданные работы (в часах)</td>
-                      <td>Обратное: чем меньше, тем лучше</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Количество активных учеников</strong></td>
-                      <td>Сколько учеников сейчас занимается</td>
-                      <td>Прямое: больше учеников = выше нагрузка и опыт</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Публичные материалы</strong></td>
-                      <td>Количество созданных учебных материалов (теория, шаблоны)</td>
-                      <td>Прямое: вклад в сообщество</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Активность в сообществе</strong></td>
-                      <td>Участие в жизни платформы</td>
-                      <td>Прямое: вовлечённость</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- Z-Scores -->
-          <div id="z-scores" data-section="z-scores">
-            <h3><span>🎯</span> Z-оценки и процентили</h3>
-
-            <div class="card">
-              <p>Сырые значения этих метрик невозможно сравнивать напрямую — у каждой свой масштаб. Поэтому SMART-система преобразует их в <strong>Z-оценки</strong>.</p>
-
-              <p><strong>Z-оценка</strong> показывает, на сколько стандартных отклонений значение отличается от среднего по всем репетиторам:</p>
-
-              <div class="grid-3">
-                <div class="smart-metric blue">
-                  <strong>Z = 0</strong>
-                  <p>Значение равно среднему</p>
-                </div>
-                <div class="smart-metric green">
-                  <strong>Z = +1</strong>
-                  <p>На одно стандартное отклонение выше среднего</p>
-                </div>
-                <div class="smart-metric purple">
-                  <strong>Z = +2</strong>
-                  <p>На два отклонения выше среднего (исключительно высокий результат)</p>
-                </div>
-              </div>
-
-              <h4>Интерпретация Z-оценок:</h4>
-              <div class="grid-2">
-                <div class="box-green">
-                  <span class="z-indicator z-excellent">🔥 Z > 2</span>
-                  <p>Исключительно высокий результат (лучше 97.7% коллег)</p>
-                </div>
-                <div class="box-blue">
-                  <span class="z-indicator z-good">⭐ Z > 1</span>
-                  <p>Выше среднего (лучше 84.1%)</p>
-                </div>
-                <div class="box-cyan">
-                  <span class="z-indicator z-normal">➡️ -1 &lt; Z &lt; 1</span>
-                  <p>В пределах нормы</p>
-                </div>
-                <div class="box-orange">
-                  <span class="z-indicator z-below">⚠️ Z &lt; -1</span>
-                  <p>Ниже среднего</p>
-                </div>
-              </div>
-
-              <p>После расчёта Z-оценок для всех метрик система вычисляет итоговый <strong>SMART-балл</strong> и на его основе — <strong>процентиль</strong>. Процентиль показывает позицию репетитора относительно всех остальных.</p>
-
-              <div class="box-purple">
-                <p><strong>💡 Пример:</strong> Процентиль 95 означает, что репетитор лучше 95% своих коллег.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Categories -->
-          <div id="categories" data-section="categories">
-            <h3><span>🏆</span> Категории репетиторов</h3>
-
-            <div class="card">
-              <p>В зависимости от процентиля все репетиторы распределяются по пяти категориям:</p>
-
-              <div class="table-wrapper">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Категория</th>
-                      <th>Процентиль</th>
-                      <th>Значение</th>
-                      <th>Как часто встречается</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><span class="category-badge category-diamond">⭐ АЛМАЗНЫЙ</span></td>
-                      <td>98–100%</td>
-                      <td>Абсолютные лидеры, топ-2%</td>
-                      <td>2 из 100</td>
-                    </tr>
-                    <tr>
-                      <td><span class="category-badge category-top">🔴 ТОП-ЭКСПЕРТ</span></td>
-                      <td>90–98%</td>
-                      <td>Элита, топ-10%</td>
-                      <td>8 из 100</td>
-                    </tr>
-                    <tr>
-                      <td><span class="category-badge category-expert">🟡 ЭКСПЕРТ</span></td>
-                      <td>70–90%</td>
-                      <td>Опытные профессионалы, топ-30%</td>
-                      <td>20 из 100</td>
-                    </tr>
-                    <tr>
-                      <td><span class="category-badge category-active">🟢 АКТИВНЫЙ</span></td>
-                      <td>40–70%</td>
-                      <td>Добросовестные преподаватели, топ-60%</td>
-                      <td>30 из 100</td>
-                    </tr>
-                    <tr>
-                      <td><span class="category-badge category-newbie">🔵 НОВИЧОК</span></td>
-                      <td>0–40%</td>
-                      <td>Начинающие или малоактивные</td>
-                      <td>40 из 100</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <p>Категория отображается в профиле и в результатах поиска, позволяя мгновенно оценить уровень репетитора.</p>
-            </div>
-          </div>
-
-          <!-- Differentiation -->
-          <div id="differentiation" data-section="differentiation">
-            <h3><span>📐</span> Дифференцирующая способность</h3>
-
-            <div class="card">
-              <p>Это уникальная метрика ПРОГРЕСС+ (0–100), показывающая, насколько репетитор умеет работать с <strong>разными</strong> учениками. Высокое значение (>70) означает, что преподаватель успешно адаптируется под индивидуальные особенности, уровни подготовки и цели. Низкое значение может указывать на «шаблонный» подход.</p>
-
-              <div class="grid-2">
-                <div class="box-green">
-                  <h4>✅ Высокое значение (>70)</h4>
-                  <p>Преподаватель успешно адаптируется под индивидуальные особенности, уровни подготовки и цели разных учеников.</p>
-                </div>
-                <div class="box-orange">
-                  <h4>⚠️ Низкое значение</h4>
-                  <p>Может указывать на «шаблонный» подход, не учитывающий индивидуальность ученика.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- Student Features -->
-        <section id="student-features" data-section="student-features">
-          <h2><span>👨‍🎓</span> Функционал для учеников</h2>
-
-          <!-- Main Menu -->
-          <div id="student-menu" data-section="student-menu">
-            <h3><span>📋</span> Главное меню ученика</h3>
-
-            <div class="card">
-              <p>После регистрации вы попадаете в главное меню, которое содержит все ключевые разделы:</p>
-
-              <div class="grid-2">
-                <div class="menu-btn">
-                  <span class="icon">🔍</span>
-                  <span class="label">Найти репетитора</span>
-                  <span class="desc">Обычный пошаговый поиск</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">🧠</span>
-                  <span class="label">SMART-поиск</span>
-                  <span class="desc">Расширенный поиск по метрикам</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">🏆</span>
-                  <span class="label">Лучшие по дисциплинам</span>
-                  <span class="desc">Топы репетиторов</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">🔥</span>
-                  <span class="label">SMART-топы недели</span>
-                  <span class="desc">5 специальных рейтингов</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">📚</span>
-                  <span class="label">Тесты и диагностика</span>
-                  <span class="desc">Профориентация и проверка знаний</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">⭐</span>
-                  <span class="label">Избранное</span>
-                  <span class="desc">Сохранённые репетиторы</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">📈</span>
-                  <span class="label">Статистика платформы</span>
-                  <span class="desc">Общая информация о системе</span>
-                </div>
-                <div class="menu-btn">
-                  <span class="icon">🧠</span>
-                  <span class="label">SMART-руководство</span>
-                  <span class="desc">Подробное объяснение метрик</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Search Tutor -->
-          <div id="search-tutor" data-section="search-tutor">
-            <h3><span>🔍</span> Обычный поиск репетитора</h3>
-
-            <div class="card">
-              <span class="badge purple">🔍 Обычный поиск</span>
-
-              <p>Это интуитивный пошаговый процесс:</p>
+              <p>Нажмите кнопку <strong>«🔍 Найти репетитора»</strong>. Бот проведёт вас через несколько шагов для уточнения критериев.</p>
 
               <div class="steps">
                 <div class="step">
                   <div class="step-number">1</div>
                   <div class="step-content">
                     <h4>Выбор предмета</h4>
-                    <p>Из списка выбираете дисциплину (рядом указано количество репетиторов).</p>
+                    <p>Вы увидите список дисциплин и количество репетиторов по каждой (например, «Математика (24)», «Русский язык (15)»). Нажмите на нужный предмет.</p>
                   </div>
                 </div>
                 <div class="step">
                   <div class="step-number">2</div>
                   <div class="step-content">
                     <h4>Цель обучения</h4>
-                    <p>Указываете, для чего нужен репетитор (ОГЭ, ЕГЭ, олимпиады, помощь с ДЗ и т.д.). Шаг можно пропустить.</p>
+                    <p>Выберите одну из целей (подготовка к ЕГЭ, ОГЭ, олимпиады, помощь с ДЗ и т.д.). Кнопка <strong>«⏩ Пропустить»</strong> позволяет не указывать цель.</p>
                   </div>
                 </div>
                 <div class="step">
                   <div class="step-number">3</div>
                   <div class="step-content">
                     <h4>Ваш уровень</h4>
-                    <p>Выбираете свой уровень подготовки (новичок, средний, продвинутый). Шаг можно пропустить.</p>
+                    <p>Укажите свою текущую подготовку (новичок, базовый, средний, продвинутый и т.д.). Можно пропустить.</p>
                   </div>
                 </div>
                 <div class="step">
                   <div class="step-number">4</div>
                   <div class="step-content">
-                    <h4>Возраст</h4>
-                    <p>Указываете возрастную категорию. Шаг можно пропустить.</p>
+                    <h4>Возраст ученика</h4>
+                    <p>Выберите возрастную категорию (дошкольники, школьники, студенты, взрослые). Можно пропустить.</p>
                   </div>
                 </div>
                 <div class="step">
                   <div class="step-number">5</div>
                   <div class="step-content">
                     <h4>Формат занятий</h4>
-                    <p>Выбираете предпочтительный формат (онлайн, очно). Шаг можно пропустить.</p>
+                    <p>Выберите предпочтительный формат (онлайн, очно у ученика, очно у преподавателя, смешанный). Можно пропустить.</p>
                   </div>
                 </div>
                 <div class="step">
                   <div class="step-number">6</div>
                   <div class="step-content">
                     <h4>Бюджет</h4>
-                    <p>Вводите максимальную цену за час (или пропускаете).</p>
+                    <p>Нажмите <strong>«💵 Указать бюджет»</strong> и введите максимальную цену за час в рублях. Или нажмите <strong>«💰 Любая цена»</strong>.</p>
                   </div>
                 </div>
               </div>
-
-              <p>После этого система показывает результаты поиска, отсортированные по <strong>релевантности</strong> (проценту совпадения с вашими критериями). Для каждого репетитора вы видите:</p>
-
-              <ul>
-                <li>Имя, категорию (⭐, 🔴, 🟡 и т.д.)</li>
-                <li>Процент совпадения с вашими критериями и звёздный рейтинг</li>
-                <li>Цену, опыт, формат занятий</li>
-                <li>SMART-рейтинг и процентиль</li>
-                <li>Процент выполнения заданий и среднее время проверки</li>
-                <li>Краткое описание</li>
-              </ul>
-
-              <p><strong>Навигация по результатам:</strong> Если репетиторов много, результаты разбиты на страницы. Внизу есть кнопки "⬅️ Назад", "➡️ Далее", а также "🔄 Обновить" для пересчёта релевантности.</p>
             </div>
           </div>
 
-          <!-- SMART Search -->
-          <div id="smart-search" data-section="smart-search">
-            <h3><span>🧠</span> SMART-поиск</h3>
+          <!-- 3.2 Search Results -->
+          <div id="search-results" data-section="search-results">
+            <h3><span>📊</span> 3.2. Результаты поиска</h3>
 
             <div class="card">
-              <span class="badge purple">🧠 SMART-поиск</span>
+              <p>После завершения шагов бот покажет список репетиторов, отсортированных по <strong>проценту совпадения</strong> с вашими критериями. Для каждого отображается:</p>
 
-              <p>Предназначен для тех, кто хочет углубиться в метрики и найти репетитора с конкретными профессиональными характеристиками. Доступны варианты:</p>
+              <ul>
+                <li>Имя и иконка категории (⭐, 🔴, 🟡, 🟢, 🔵)</li>
+                <li>Процент совпадения</li>
+                <li>Цена, опыт, формат</li>
+                <li>SMART-рейтинг и процентиль</li>
+                <li>Краткое описание</li>
+              </ul>
+
+              <h4>Навигация</h4>
+              <div class="grid-2">
+                <div class="box-blue">
+                  <h4>⬅️ Назад / Далее ➡️</h4>
+                  <p>Перелистывание страниц результатов</p>
+                </div>
+                <div class="box-green">
+                  <h4>🔄 Обновить</h4>
+                  <p>Перезапуск поиска с теми же фильтрами</p>
+                </div>
+                <div class="box-purple">
+                  <h4>🔍 Новый поиск</h4>
+                  <p>Возврат к выбору предмета</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3.3 Tutor Card -->
+          <div id="tutor-card" data-section="tutor-card">
+            <h3><span>👤</span> 3.3. Карточка репетитора</h3>
+
+            <div class="card">
+              <p>Нажмите на любого репетитора, чтобы открыть полный профиль. Он содержит:</p>
 
               <div class="grid-2">
                 <div class="box-blue">
-                  <h4>🎯 Точный SMART-поиск</h4>
-                  <p>Полный пошаговый поиск с возможностью применения SMART-фильтров.</p>
-                </div>
-                <div class="box-green">
-                  <h4>⚡ Быстрый SMART-подбор</h4>
-                  <p>Показывает топ-20 репетиторов по глобальному рейтингу.</p>
+                  <h4>👤 Общая информация</h4>
+                  <p>ФИО, категория, SMART-рейтинг и процентиль</p>
                 </div>
                 <div class="box-purple">
-                  <h4>📊 По SMART-рейтингу</h4>
-                  <p>Сортировка только по рейтингу.</p>
+                  <h4>📊 SMART-метрики</h4>
+                  <p>Z-оценки по всем показателям</p>
+                </div>
+                <div class="box-green">
+                  <h4>📈 Статистика</h4>
+                  <p>Процент выполнения, время проверки, количество материалов, активных учеников</p>
                 </div>
                 <div class="box-orange">
-                  <h4>🎓 По предметному рейтингу</h4>
-                  <p>Сортировка по рейтингу внутри выбранной дисциплины.</p>
+                  <h4>🎓 Образование и опыт</h4>
+                  <p>Квалификация и стаж работы</p>
                 </div>
               </div>
 
-              <h4>SMART-фильтры (доступны после выбора предмета):</h4>
-              <ul>
-                <li>По категории (только Алмазные, только Топ-эксперты и т.д.)</li>
-                <li>По минимальному SMART-рейтингу</li>
-                <li>По Z-оценкам выполнения (например, только с Z > 1)</li>
-                <li>По дифференцирующей способности (>70, >80)</li>
-                <li>По динамике роста (только растущие)</li>
-              </ul>
+              <p>Также указаны условия (цена, формат), специализация (основная и дополнительные дисциплины), информация «О себе» и контакты.</p>
+            </div>
+          </div>
+
+          <!-- 3.4 Actions -->
+          <div id="tutor-actions" data-section="tutor-actions">
+            <h3><span>⚡</span> 3.4. Действия в профиле репетитора</h3>
+
+            <div class="card">
+              <p>Внизу профиля расположены кнопки:</p>
+
+              <div class="grid-3">
+                <span class="action-btn">📞 Получить контакты</span>
+                <span class="action-btn">⭐ Добавить в избранное</span>
+                <span class="action-btn">🧠 SMART-анализ</span>
+                <span class="action-btn">📊 Сравнить</span>
+                <span class="action-btn">🔙 К результатам</span>
+                <span class="action-btn">🏠 Главное меню</span>
+              </div>
+
+              <div class="info-box info">
+                <p><strong>📞 Контакты</strong> — бот покажет контактные данные репетитора (Telegram, телефон, email).</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: SMART Search -->
+        <section id="smart-search" data-section="smart-search">
+          <h2><span class="section-number">4</span>Раздел 2: SMART-поиск</h2>
+
+          <!-- 4.1 SMART Filters -->
+          <div id="smart-filters" data-section="smart-filters">
+            <h3><span>🎯</span> 4.1. Что такое SMART-фильтры</h3>
+
+            <div class="card">
+              <p>SMART-фильтры позволяют находить репетиторов с конкретными профессиональными характеристиками:</p>
+
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Фильтр</th>
+                      <th>Описание</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td><strong>Категория SMART</strong></td>
+                      <td>Алмазный, Топ-эксперт, Эксперт, Активный, Новичок</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Минимальный SMART-рейтинг</strong></td>
+                      <td>Значение от 0 до 100</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Минимальная Z-оценка выполнения</strong></td>
+                      <td>Например, >1 (выше среднего)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Максимальное время проверки</strong></td>
+                      <td>По Z-оценке (чем ниже, тем быстрее)</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Минимальная дифференцирующая способность</strong></td>
+                      <td>Значение от 0 до 100</td>
+                    </tr>
+                    <tr>
+                      <td><strong>Динамика роста</strong></td>
+                      <td>Только репетиторы с положительным ростом</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4.2 How to use SMART Search -->
+          <div id="smart-search-usage" data-section="smart-search-usage">
+            <h3><span>🔍</span> 4.2. Как использовать SMART-поиск</h3>
+
+            <div class="card">
+              <div class="steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h4>Выбор варианта поиска</h4>
+                    <p>В главном меню нажмите <strong>«🧠 SMART-поиск»</strong> и выберите один из вариантов.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h4>Варианты поиска</h4>
+                    <p><strong>🎯 Точный SMART-поиск</strong> — пошаговый поиск с последующими фильтрами.<br>
+                    <strong>⚡ Быстрый SMART-подбор</strong> — топ-20 по глобальному рейтингу.<br>
+                    <strong>📊 По SMART-рейтингу</strong> — сортировка только по рейтингу.<br>
+                    <strong>🎓 По предметному рейтингу</strong> — сортировка внутри дисциплины.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <h4>Применение фильтров</h4>
+                    <p>После получения результатов нажмите <strong>«🧠 SMART-фильтры»</strong>, задайте параметры и нажмите <strong>«🔍 Применить и искать»</strong>.</p>
+                  </div>
+                </div>
+              </div>
 
               <div class="info-box success">
                 <p><strong>💡 Совет:</strong> SMART-поиск идеален, когда вы точно знаете, что ищете репетитора с выдающимися показателями по конкретному критерию.</p>
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- Tests -->
-          <div id="tests" data-section="tests">
-            <h3><span>📚</span> Тесты и диагностика</h3>
+        <!-- Section 5: Tests -->
+        <section id="tests" data-section="tests">
+          <h2><span class="section-number">5</span>Раздел 3: Тесты и диагностика</h2>
+
+          <!-- 5.1 Test Types -->
+          <div id="test-types" data-section="test-types">
+            <h3><span>📋</span> 5.1. Типы тестов</h3>
 
             <div class="card">
-              <p>Раздел помогает определиться с выбором направления и оценить свои знания.</p>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Тип</th>
+                      <th>Название</th>
+                      <th>Описание</th>
+                      <th>Вопросов</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>🔍</td>
+                      <td>Найди свою дисциплину</td>
+                      <td>Профориентационный тест для выбора предмета</td>
+                      <td>10</td>
+                    </tr>
+                    <tr>
+                      <td>📝</td>
+                      <td>Проверка готовности к экзаменам</td>
+                      <td>Предметные тесты (ОГЭ/ЕГЭ)</td>
+                      <td>10–15</td>
+                    </tr>
+                    <tr>
+                      <td>🎯</td>
+                      <td>Профориентационный тест</td>
+                      <td>Помогает выбрать профессию</td>
+                      <td>8</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
 
-              <h4>Типы тестов:</h4>
+          <!-- 5.2 Passing Test -->
+          <div id="test-passing" data-section="test-passing">
+            <h3><span>✏️</span> 5.2. Прохождение теста</h3>
 
-              <div class="grid-2">
-                <div class="box-blue">
-                  <h4>🔍 Найди свою дисциплину</h4>
-                  <p>Профориентационный тест (10 вопросов), который анализирует ваши интересы и склонности, рекомендуя подходящие предметы (математика, программирование, литература, естественные науки и т.д.). После теста вы получаете список рекомендованных репетиторов по этим дисциплинам.</p>
+            <div class="card">
+              <div class="steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <div class="step-content">
+                    <h4>Выбор теста</h4>
+                    <p>Нажмите <strong>«📚 Тесты и диагностика»</strong> и выберите нужный тест.</p>
+                  </div>
                 </div>
-                <div class="box-green">
-                  <h4>📝 Готовность к экзаменам</h4>
-                  <p>Предметные тесты для оценки уровня подготовки. Примеры: ОГЭ по математике (15 вопросов), ЕГЭ по русскому языку (10 вопросов). После теста: баллы, оценка уровня, рекомендации, список репетиторов.</p>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <div class="step-content">
+                    <h4>Ответы на вопросы</h4>
+                    <p>Отвечайте на вопросы — одиночный или множественный выбор.</p>
+                  </div>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <div class="step-content">
+                    <h4>Навигация</h4>
+                    <p>Кнопки: <strong>«← Назад»</strong>, <strong>«Далее →»</strong>, <strong>«✅ Завершить»</strong>.</p>
+                  </div>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div class="box-purple">
-                <h4>🎯 Профориентационный тест</h4>
-                <p>Помогает выбрать будущую профессию и соответствующие учебные дисциплины (8 вопросов).</p>
-              </div>
+          <!-- 5.3 Results -->
+          <div id="test-results" data-section="test-results">
+            <h3><span>📊</span> 5.3. Результаты и рекомендации</h3>
 
-              <h4>Как проходить тест:</h4>
+            <div class="card">
+              <p>После завершения теста вы получите:</p>
+
               <ul>
-                <li>На каждый вопрос можно выбрать один или несколько вариантов.</li>
-                <li>Выбранные варианты отмечаются галочкой ✅.</li>
-                <li>Есть кнопки навигации: «← Назад», «Далее →», «✅ Завершить».</li>
-                <li>Результаты сохраняются в вашей личной статистике.</li>
+                <li>Количество правильных ответов и процент</li>
+                <li>Оценку уровня подготовки</li>
+                <li>Текстовые рекомендации</li>
+                <li>Список рекомендованных дисциплин</li>
+                <li>Список репетиторов (до 5) с именем, предметом, рейтингом, ценой</li>
+              </ul>
+
+              <p>Кнопка <strong>«🔍 Поиск репетиторов»</strong> позволяет сразу перейти к поиску по рекомендованным дисциплинам.</p>
+
+              <div class="info-box info">
+                <p><strong>💡</strong> Вы можете пройти тест повторно в любое время — результаты перезапишутся.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: Favorites -->
+        <section id="favorites" data-section="favorites">
+          <h2><span class="section-number">6</span>Раздел 4: Избранное и сравнение репетиторов</h2>
+
+          <!-- 6.1 Add to Favorites -->
+          <div id="add-favorites" data-section="add-favorites">
+            <h3><span>⭐</span> 6.1. Добавление в избранное</h3>
+
+            <div class="card">
+              <p>В профиле репетитора нажмите кнопку <strong>«⭐ Добавить в избранное»</strong>. Репетитор сохранится в вашем личном списке.</p>
+            </div>
+          </div>
+
+          <!-- 6.2 View Favorites -->
+          <div id="view-favorites" data-section="view-favorites">
+            <h3><span>📋</span> 6.2. Просмотр избранного</h3>
+
+            <div class="card">
+              <p>В главном меню нажмите <strong>«⭐ Избранное»</strong>. Для каждого репетитора отображаются:</p>
+
+              <ul>
+                <li>Имя, категория, цена, опыт, формат, рейтинг</li>
+                <li>Индикаторы: 🎓 (высокий рейтинг по предмету), 🎯 (отличная дифференциация), ✅ (высокая Z-оценка)</li>
               </ul>
             </div>
           </div>
 
-          <!-- Favorites -->
-          <div id="favorites" data-section="favorites">
-            <h3><span>⭐</span> Избранное и сравнение репетиторов</h3>
+          <!-- 6.3 Compare -->
+          <div id="compare-tutors" data-section="compare-tutors">
+            <h3><span>📊</span> 6.3. Сравнение репетиторов</h3>
 
             <div class="card">
-              <p>В разделе <strong>Избранное</strong> сохраняются понравившиеся репетиторы. Здесь вы можете:</p>
-
-              <ul>
-                <li><strong>Просматривать список</strong> всех избранных с краткой информацией и SMART-индикаторами (🎓 — высокий рейтинг по предмету, 🎯 — отличная дифференциация, ✅ — высокая Z-оценка выполнения).</li>
-                <li><strong>Быстро переходить</strong> в их профили.</li>
-                <li><strong>Сравнивать репетиторов</strong> (если их двое или больше) — система создаёт удобную таблицу сравнения по всем ключевым метрикам.</li>
-                <li><strong>Обновлять SMART-данные</strong> (если рейтинги изменились).</li>
-                <li><strong>Очищать избранное.</strong></li>
-              </ul>
+              <p>Если в избранном <strong>2 или более репетиторов</strong>, появляется кнопка <strong>«📊 Сравнить SMART-метрики»</strong>. Формируется таблица сравнения по всем ключевым показателям.</p>
 
               <h4>Пример таблицы сравнения:</h4>
               <div class="table-wrapper">
@@ -1416,219 +1569,251 @@
               </div>
             </div>
           </div>
+        </section>
 
-          <!-- SMART Tops -->
-          <div id="smart-tops" data-section="smart-tops">
-            <h3><span>🏆</span> SMART-топы недели</h3>
+        <!-- Section 7: SMART Tops -->
+        <section id="smart-tops" data-section="smart-tops">
+          <h2><span class="section-number">7</span>Раздел 5: SMART-топы</h2>
+
+          <h3><span>🏆</span> 7.1. Виды топов</h3>
+
+          <div class="card">
+            <p>Каждую неделю система автоматически формирует <strong>5 параллельных рейтингов</strong>:</p>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Топ</th>
+                    <th>Иконка</th>
+                    <th>Описание</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Общий топ</strong></td>
+                    <td>🔥</td>
+                    <td>20 лучших с квотой (≤4 с одной дисциплины)</td>
+                  </tr>
+                  <tr>
+                    <td><strong>По дисциплинам</strong></td>
+                    <td>📚</td>
+                    <td>По 3 лучших в каждой области</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Восходящие звёзды</strong></td>
+                    <td>⭐</td>
+                    <td>Новички с ростом >30%</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Надёжные партнёры</strong></td>
+                    <td>🛡️</td>
+                    <td>Ветераны со стабильностью >90%</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Инноваторы</strong></td>
+                    <td>💡</td>
+                    <td>Создатели материалов</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <h3><span>👁️</span> 7.2. Просмотр топа</h3>
+
+          <div class="card">
+            <p>Нажмите на интересующий топ — увидите список с местом, именем, категорией, основными метриками и кнопкой перехода в профиль репетитора.</p>
+          </div>
+        </section>
+
+        <!-- Section 8: Platform Stats -->
+        <section id="platform-stats" data-section="platform-stats">
+          <h2><span class="section-number">8</span>Раздел 6: Статистика платформы</h2>
+
+          <div class="card">
+            <p>Раздел показывает общую картину работы системы:</p>
+
+            <ul>
+              <li>Общее количество репетиторов и дисциплин</li>
+              <li>Средний SMART-рейтинг по платформе</li>
+              <li>Распределение по категориям</li>
+              <li>Популярные дисциплины</li>
+              <li>Топ-5 репетиторов по SMART-рейтингу</li>
+              <li>Ежедневная активность</li>
+            </ul>
+
+            <p>Кнопка <strong>«🔄 Обновить»</strong> позволяет обновить данные.</p>
+
+            <p>Здесь же доступна кнопка <strong>«🧠 SMART-аналитика»</strong> с подробным описанием методологии расчёта и текущих весов метрик.</p>
+          </div>
+        </section>
+
+        <!-- Section 9: SMART Metrics -->
+        <section id="smart-metrics" data-section="smart-metrics">
+          <h2><span class="section-number">9</span>Раздел 7: Понимание SMART-метрик</h2>
+
+          <!-- 9.1 Z-score -->
+          <div id="z-score" data-section="z-score">
+            <h3><span>📊</span> 9.1. Z-оценка</h3>
 
             <div class="card">
-              <p>Каждую неделю система автоматически формирует <strong>5 параллельных рейтингов</strong> для справедливой оценки репетиторов разных категорий:</p>
+              <p>Z-оценка показывает отклонение от среднего в стандартных отклонениях:</p>
+
+              <div class="grid-3">
+                <div class="smart-metric blue">
+                  <strong>Z = 0</strong>
+                  <p>Средний результат</p>
+                </div>
+                <div class="smart-metric green">
+                  <strong>Z = +1</strong>
+                  <p>Лучше ~84% коллег</p>
+                </div>
+                <div class="smart-metric purple">
+                  <strong>Z = +2</strong>
+                  <p>Лучше ~98% коллег</p>
+                </div>
+              </div>
+
+              <h4>Интерпретация Z-оценок:</h4>
+              <div class="grid-2">
+                <div class="box-green">
+                  <span class="z-indicator z-excellent">🔥 Z > 2</span>
+                  <p>Исключительно высокий результат (лучше 97.7% коллег)</p>
+                </div>
+                <div class="box-blue">
+                  <span class="z-indicator z-good">⭐ Z > 1</span>
+                  <p>Выше среднего (лучше 84.1%)</p>
+                </div>
+                <div class="box-cyan">
+                  <span class="z-indicator z-normal">➡️ -1 &lt; Z &lt; 1</span>
+                  <p>В пределах нормы</p>
+                </div>
+                <div class="box-orange">
+                  <span class="z-indicator z-below">⚠️ Z &lt; -1</span>
+                  <p>Ниже среднего</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9.2 Percentile -->
+          <div id="percentile" data-section="percentile">
+            <h3><span>🎯</span> 9.2. Процентиль</h3>
+
+            <div class="card">
+              <p>Процентиль показывает долю репетиторов (%), у которых результат ниже. Например, <strong>процентиль 95</strong> означает, что репетитор лучше 95% своих коллег.</p>
+
+              <div class="box-purple">
+                <p><strong>💡 Пример:</strong> Процентиль 95 = репетитор входит в топ-5% лучших.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9.3 SMART Category -->
+          <div id="smart-category" data-section="smart-category">
+            <h3><span>🏆</span> 9.3. Категория SMART</h3>
+
+            <div class="card">
+              <p>В зависимости от процентиля все репетиторы распределяются по пяти категориям:</p>
 
               <div class="table-wrapper">
                 <table>
                   <thead>
                     <tr>
-                      <th>Топ</th>
-                      <th>Описание</th>
+                      <th>Категория</th>
+                      <th>Иконка</th>
+                      <th>Процентиль</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td>🔥 Общий топ</td>
-                      <td>20 лучших репетиторов с учётом квот (максимум 4 с одной дисциплины)</td>
+                      <td><strong>Алмазный</strong></td>
+                      <td><span class="category-badge category-diamond">⭐</span></td>
+                      <td>≥98</td>
                     </tr>
                     <tr>
-                      <td>📚 По дисциплинам</td>
-                      <td>По 3 лучших репетитора в каждой предметной области</td>
+                      <td><strong>Топ-эксперт</strong></td>
+                      <td><span class="category-badge category-top">🔴</span></td>
+                      <td>90–97</td>
                     </tr>
                     <tr>
-                      <td>⭐ Восходящие звёзды</td>
-                      <td>Новички (опыт &lt;3 месяцев) с ростом показателей &gt;30%</td>
+                      <td><strong>Эксперт</strong></td>
+                      <td><span class="category-badge category-expert">🟡</span></td>
+                      <td>70–89</td>
                     </tr>
                     <tr>
-                      <td>🛡️ Надёжные партнёры</td>
-                      <td>Ветераны (опыт &gt;12 месяцев) со стабильностью &gt;90%</td>
+                      <td><strong>Активный</strong></td>
+                      <td><span class="category-badge category-active">🟢</span></td>
+                      <td>40–69</td>
                     </tr>
                     <tr>
-                      <td>💡 Инноваторы</td>
-                      <td>Репетиторы, создавшие больше всего учебных материалов</td>
+                      <td><strong>Новичок</strong></td>
+                      <td><span class="category-badge category-newbie">🔵</span></td>
+                      <td>&lt;40</td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-
-              <p>Вы можете просмотреть каждый топ, нажав на соответствующую кнопку. Для каждого репетитора указана категория, рейтинг и основные показатели.</p>
             </div>
           </div>
 
-          <!-- Tutor Profile View -->
-          <div id="tutor-profile-view" data-section="tutor-profile-view">
-            <h3><span>👤</span> Просмотр профиля репетитора</h3>
+          <!-- 9.4 Differentiation -->
+          <div id="differentiation" data-section="differentiation">
+            <h3><span>📐</span> 9.4. Дифференцирующая способность</h3>
 
             <div class="card">
-              <p>Нажав на имя репетитора в результатах поиска или в избранном, вы попадаете в его полный профиль, который содержит:</p>
-
-              <h4>1. Общая информация</h4>
-              <p>Имя, категория, SMART-рейтинг, процентиль.</p>
-
-              <h4>2. SMART-метрики</h4>
-              <ul>
-                <li>Z-оценка выполнения (с эмодзи-интерпретацией: 🔥, ⭐, ➡️, ⚠️, ❌)</li>
-                <li>Z-оценка времени проверки</li>
-                <li>Дифференцирующая способность</li>
-                <li>Рейтинг по дисциплине</li>
-              </ul>
-
-              <h4>3. Базовая статистика</h4>
-              <p>Процент выполнения, время проверки, количество материалов, учеников.</p>
-
-              <h4>4. Образование и опыт</h4>
-
-              <h4>5. Условия</h4>
-              <p>Цена, формат занятий.</p>
-
-              <h4>6. Специализация</h4>
-              <p>Основные и дополнительные дисциплины.</p>
-
-              <h4>7. О себе</h4>
-
-              <h4>8. Кнопки действий</h4>
-              <div class="grid-3">
-                <span class="action-btn">📞 Контакты</span>
-                <span class="action-btn">⭐ В избранное</span>
-                <span class="action-btn">🧠 SMART-анализ</span>
-                <span class="action-btn">📊 Сравнить</span>
-                <span class="action-btn">🔙 К результатам</span>
-                <span class="action-btn">🏠 Главное меню</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Platform Stats -->
-          <div id="platform-stats" data-section="platform-stats">
-            <h3><span>📈</span> Статистика платформы</h3>
-
-            <div class="card">
-              <p>Раздел показывает общую картину:</p>
-
-              <ul>
-                <li>Общее количество репетиторов и дисциплин</li>
-                <li>Средний SMART-рейтинг по платформе</li>
-                <li>Распределение по категориям (сколько Алмазных, Топ-экспертов и т.д.)</li>
-                <li>Популярные дисциплины (топ-5 по количеству репетиторов)</li>
-                <li>Топ-5 репетиторов по SMART-рейтингу</li>
-                <li>Статистику запросов и просмотров за сегодня</li>
-                <li>Информацию о системе (используется ли SMART-рейтинг)</li>
-              </ul>
-
-              <p>Здесь же доступна кнопка <strong>🧠 SMART-аналитика</strong> с подробным описанием методологии расчёта и текущих весов метрик.</p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Tutor Features -->
-        
-
-        <!-- Common Features -->
-        <section id="common-features" data-section="common-features">
-          <h2><span>🔧</span> Общие функции</h2>
-
-          <div id="help-system" data-section="help-system">
-            <h3><span>❓</span> Система помощи /help</h3>
-
-            <div class="card">
-              <p>В любой момент вы можете вызвать команду <code>/help</code> или нажать соответствующую кнопку в меню. Система помощи интерактивна и адаптируется под вашу роль (репетитор или ученик).</p>
-
-              <ul>
-                <li><strong>Главный экран помощи:</strong> Приветствие и список основных разделов.</li>
-                <li><strong>Детальные подразделы:</strong> Нажав на интересующий раздел, вы увидите подробное описание его функционала с советами по использованию.</li>
-                <li><strong>FAQ:</strong> Раздел «Часто задаваемые вопросы» с пагинацией.</li>
-                <li><strong>Поддержка:</strong> Контакты для связи с разработчиком/поддержкой.</li>
-              </ul>
-            </div>
-          </div>
-
-          <div id="smart-guide" data-section="smart-guide">
-            <h3><span>🧠</span> SMART-руководство</h3>
-
-            <div class="card">
-              <p>Раздел содержит подробные объяснения всех аспектов системы:</p>
+              <p>Показатель уникальности профиля от 0 до 100. Высокое значение (>80) говорит о гибкости и умении работать с разными учениками.</p>
 
               <div class="grid-2">
-                <div class="box-blue">
-                  <h4>📊 Что такое SMART-рейтинг?</h4>
-                  <p>Подробное описание компонентов и категорий.</p>
-                </div>
-                <div class="box-purple">
-                  <h4>🎯 Как работают Z-оценки?</h4>
-                  <p>Объяснение с формулами и интерпретацией.</p>
-                </div>
                 <div class="box-green">
-                  <h4>📈 Как считать динамику роста?</h4>
-                  <p>Расчёт недельного и месячного роста.</p>
+                  <h4>✅ Высокое значение (>80)</h4>
+                  <p>Репетитор успешно адаптируется под разные уровни и цели учеников</p>
                 </div>
                 <div class="box-orange">
-                  <h4>🏆 Как формируются SMART-топы?</h4>
-                  <p>Описание 5 параллельных рейтингов.</p>
-                </div>
-                <div class="box-cyan">
-                  <h4>🔍 Как использовать SMART-поиск?</h4>
-                  <p>Алгоритм и фильтры.</p>
-                </div>
-                <div class="box-pink">
-                  <h4>💡 Советы по выбору репетитора</h4>
-                  <p>Практические рекомендации на основе метрик.</p>
+                  <h4>⚠️ Низкое значение</h4>
+                  <p>Возможно, «шаблонный» подход без учёта индивидуальности</p>
                 </div>
               </div>
             </div>
           </div>
-        </section>
 
-        <!-- Admin Panel -->
-        <section id="automatic-smart-system" data-section="automatic-smart-system">
-            <h2><span>⚙️</span> Автоматическая SMART-система</h2>
+          <!-- 9.5 Dynamic Weights -->
+          <div id="dynamic-weights" data-section="dynamic-weights">
+            <h3><span>⚖️</span> 9.5. Динамические веса</h3>
 
-            <div class="card auto-card">
-                <p>Система работает в полностью автоматическом режиме. Еженедельно по расписанию запускается комплексный процесс обслуживания SMART-модуля, который обновляет данные, производит расчёты и формирует отчёты без участия человека.</p>
-
-                <h4>Еженедельный автоматический цикл обслуживания</h4>
-                <div class="table-wrapper">
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Этап цикла</th>
-                        <th>Что происходит автоматически</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr><td>1️⃣ Инициализация среды</td><td>Проверка целостности и подготовка базы данных SMART к работе.</td></tr>
-                    <tr><td>2️⃣ Синхронизация данных</td><td>Автоматическая выгрузка актуальных данных о репетиторах из основной базы данных.</td></tr>
-                    <tr><td>3️⃣ Сбор метрик</td><td>Система самостоятельно собирает статистику активности и показатели для расчёта рейтингов.</td></tr>
-                    <tr><td>4️⃣ Математический расчёт</td><td>Фоновый пересчёт всех рейтингов, Z-оценок и категорий на основе собранных метрик.</td></tr>
-                    <tr><td>5️⃣ Формирование топов</td><td>Генерация еженедельных списков лидеров на основе свежих рассчитанных данных.</td></tr>
-                    </tbody>
-                </table>
-                </div>
-                <p style="margin-top: 15px;"><em>💡 Весь цикл выполняется системой автоматически раз в неделю. Это гарантирует актуальность рейтингов и минимальную нагрузку на сервер.</em></p>
-
-                <h4>Системный мониторинг и статистика</h4>
-                <p>Для контроля работы предусмотрены автоматически обновляемые разделы:</p>
-                <ul>
-                <li><strong>Общая статистика системы:</strong> автоматически собираемые показатели работы.</li>
-                <li><strong>Детальные списки репетиторов и учеников:</strong> всегда актуальная версия базы.</li>
-                <li><strong>График активности за 30 дней:</strong> автоматическое построение по дням.</li>
-                <li><strong>Экспорт данных в JSON:</strong> автоматически сгенерированные дампы данных.</li>
-                </ul>
+            <div class="card">
+              <p>Система автоматически определяет важность каждой метрики внутри дисциплины и пересчитывает веса еженедельно. Это обеспечивает справедливость сравнения между разными предметными областями.</p>
             </div>
+          </div>
         </section>
 
-        <!-- FAQ -->
+        <!-- Section 10: Common Functions -->
+        <section id="common-functions" data-section="common-functions">
+          <h2><span class="section-number">10</span>Раздел 8: Общие функции</h2>
+
+          <div class="card">
+            <h3><span>❓</span> 10.1. Система помощи /help</h3>
+
+            <p>Команда <code>/help</code> или соответствующая кнопка открывает интерактивную справку с разделами и FAQ.</p>
+
+            <h3><span>🧭</span> 10.2. SMART-руководство</h3>
+
+            <p>Кнопка <strong>«🧭 SMART-руководство»</strong> в главном меню открывает подробное объяснение всех метрик и принципов работы.</p>
+
+            <h3><span>🔄</span> 10.3. Перезапуск бота</h3>
+
+            <p>Кнопка <strong>«🔄 Перезапустить»</strong> сбрасывает текущее состояние и возвращает в главное меню.</p>
+          </div>
+        </section>
+
+        <!-- Section 11: FAQ -->
         <section id="faq" data-section="faq">
-          <h2><span>❓</span> Часто задаваемые вопросы (FAQ)</h2>
+          <h2><span class="section-number">11</span>Часто задаваемые вопросы (FAQ)</h2>
 
           <div class="faq-item" onclick="toggleFaq(this)">
             <button class="faq-question">
-              <span>Сколько стоит использование ПРОГРЕСС+?</span>
+              <span>Сколько стоит использование бота?</span>
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="faq-answer">
@@ -1640,12 +1825,24 @@
 
           <div class="faq-item" onclick="toggleFaq(this)">
             <button class="faq-question">
-              <span>Что означают процентили?</span>
+              <span>Нужно ли регистрироваться?</span>
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Процентиль показывает, сколько процентов репетиторов имеют балл ниже данного. Например, процентиль 95 означает, что репетитор лучше 95% коллег.
+                Нет, регистрация не требуется. Вы можете сразу начинать поиск репетиторов.
+              </div>
+            </div>
+          </div>
+
+          <div class="faq-item" onclick="toggleFaq(this)">
+            <button class="faq-question">
+              <span>Откуда берутся данные о репетиторах?</span>
+              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-content">
+                Из основной базы платформы, где репетиторы ведут свою деятельность. Система автоматически собирает статистику их работы.
               </div>
             </div>
           </div>
@@ -1657,83 +1854,43 @@
             </button>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Рейтинги пересчитываются еженедельно (обычно в ночь на понедельник). Администратор может запустить пересчёт вручную.
+                Рейтинги пересчитываются еженедельно.
               </div>
             </div>
           </div>
 
           <div class="faq-item" onclick="toggleFaq(this)">
             <button class="faq-question">
-              <span>Почему у некоторых репетиторов нет SMART-рейтинга?</span>
+              <span>Как добавить репетитора в избранное?</span>
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Для расчёта необходимо достаточно данных (минимум несколько завершённых заданий, активные ученики). Если данных мало, рейтинг может отсутствовать или быть нулевым.
+                В профиле репетитора нажмите кнопку «⭐ В избранное».
               </div>
             </div>
           </div>
 
           <div class="faq-item" onclick="toggleFaq(this)">
             <button class="faq-question">
-              <span>Могу ли я как репетитор повлиять на свой рейтинг?</span>
+              <span>Как сравнить репетиторов?</span>
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Да, рейтинг зависит от вашей работы: быстрее проверяйте задания, публикуйте материалы, набирайте учеников. Система автоматически учитывает все действия.
+                Добавьте в избранное 2 или более репетиторов, затем нажмите «📊 Сравнить».
               </div>
             </div>
           </div>
 
           <div class="faq-item" onclick="toggleFaq(this)">
             <button class="faq-question">
-              <span>Как пройти тест повторно?</span>
+              <span>Я нашёл ошибку. Куда писать?</span>
               <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
             </button>
             <div class="faq-answer">
               <div class="faq-answer-content">
-                Вы можете начать тест заново в любое время — результаты перезапишутся.
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-question">
-              <span>Что означает дифференцирующая способность?</span>
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-content">
-                Это метрика (0–100), показывающая, насколько репетитор умеет работать с разными учениками. Высокое значение (>70) означает успешную адаптацию под индивидуальные особенности.
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-question">
-              <span>Как интерпретировать Z-оценки?</span>
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-content">
-                <p><span class="z-indicator z-excellent">🔥 Z > 2</span> — исключительно высокий результат (лучше 97.7% коллег)</p>
-                <p><span class="z-indicator z-good">⭐ Z > 1</span> — выше среднего (лучше 84.1%)</p>
-                <p><span class="z-indicator z-normal">➡️ -1 &lt; Z &lt; 1</span> — в пределах нормы</p>
-                <p><span class="z-indicator z-below">⚠️ Z &lt; -1</span> — ниже среднего</p>
-                <p><span class="z-indicator z-critical">❌ Z &lt; -2</span> — критически низкий результат (хуже 97.7%)</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="faq-item" onclick="toggleFaq(this)">
-            <button class="faq-question">
-              <span>Что такое SMART-топы недели?</span>
-              <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
-            </button>
-            <div class="faq-answer">
-              <div class="faq-answer-content">
-                Это 5 параллельных рейтингов: общий топ, топ по дисциплинам, восходящие звёзды (новички с ростом), надёжные партнёры (ветераны) и инноваторы (авторы материалов).
+                Пишите в Telegram: <strong>@AVick23</strong>
               </div>
             </div>
           </div>
@@ -1741,63 +1898,43 @@
 
         <!-- Glossary -->
         <section id="glossary" data-section="glossary">
-          <h2><span>📖</span> Глоссарий терминов</h2>
+          <h2><span class="section-number">12</span>Приложение: Глоссарий терминов</h2>
 
           <div class="card">
             <div class="glossary-term">
               <span class="term">SMART-рейтинг</span>
-              <span class="definition">Комплексная оценка репетитора от 0 до 100 на основе пяти метрик.</span>
+              <span class="definition">Интегральная оценка репетитора от 0 до 100 на основе пяти метрик.</span>
             </div>
             <div class="glossary-term">
               <span class="term">Z-оценка</span>
-              <span class="definition">Мера отклонения от среднего в стандартных отклонениях. Позволяет сравнивать разные метрики.</span>
+              <span class="definition">Отклонение от среднего в стандартных отклонениях (σ). Позволяет сравнивать разные метрики.</span>
             </div>
             <div class="glossary-term">
               <span class="term">Процентиль</span>
-              <span class="definition">Позиция репетитора относительно всех остальных (0–100%).</span>
+              <span class="definition">Позиция репетитора относительно других (0–100%). Показывает, какой процент коллег имеет результат ниже.</span>
+            </div>
+            <div class="glossary-term">
+              <span class="term">Категория SMART</span>
+              <span class="definition">Уровень репетитора: Алмазный (⭐), Топ-эксперт (🔴), Эксперт (🟡), Активный (🟢), Новичок (🔵).</span>
             </div>
             <div class="glossary-term">
               <span class="term">Дифференцирующая способность</span>
-              <span class="definition">Способность репетитора работать с учениками разного уровня (0–100).</span>
+              <span class="definition">Показатель уникальности профиля (0–100). Отражает гибкость работы с разными учениками.</span>
             </div>
             <div class="glossary-term">
-              <span class="term">SMART-категория</span>
-              <span class="definition">Алмазный (⭐), топ-эксперт (🔴), эксперт (🟡), активный (🟢), новичок (🔵).</span>
+              <span class="term">Динамические веса</span>
+              <span class="definition">Автоматическая важность метрик внутри дисциплины. Пересчитываются еженедельно.</span>
             </div>
             <div class="glossary-term">
               <span class="term">SMART-топы</span>
-              <span class="definition">Пять еженедельных рейтингов для разных групп репетиторов.</span>
-            </div>
-            <div class="glossary-term">
-              <span class="term">Релевантность</span>
-              <span class="definition">Процент совпадения репетитора с вашими критериями поиска.</span>
-            </div>
-            <div class="glossary-term">
-              <span class="term">Z-выполнение</span>
-              <span class="definition">Z-оценка процента выполненных заданий.</span>
-            </div>
-            <div class="glossary-term">
-              <span class="term">Z-время</span>
-              <span class="definition">Z-оценка времени проверки (инвертированная: чем меньше время, тем выше Z).</span>
-            </div>
-            <div class="glossary-term">
-              <span class="term">Динамика роста</span>
-              <span class="definition">Изменение показателей репетитора за неделю/месяц.</span>
-            </div>
-            <div class="glossary-term">
-              <span class="term">Восходящие звёзды</span>
-              <span class="definition">Новички с высокими темпами роста (>30%).</span>
-            </div>
-            <div class="glossary-term">
-              <span class="term">Надёжные партнёры</span>
-              <span class="definition">Ветераны со стабильностью >90%.</span>
+              <span class="definition">Еженедельные рейтинги лучших репетиторов в пяти номинациях.</span>
             </div>
           </div>
         </section>
       </div>
 
       <footer>
-        <p>ПРОГРЕСС+ SMART Edition — Интеллектуальная платформа для поиска репетиторов и организации эффективного обучения</p>
+        <p><strong>ПРОГРЕСС+ SMART Edition</strong><br>Интеллектуальный поиск репетиторов на основе объективных данных</p>
       </footer>
     </div>
 
@@ -1904,6 +2041,15 @@
         sidebar.classList.remove('open');
         overlay.classList.remove('active');
       }
+    });
+
+    // Close sidebar on link click (mobile)
+    document.querySelectorAll('.nav-item:not(button)').forEach(item => {
+      item.addEventListener('click', function() {
+        if (window.innerWidth < 1024) {
+          closeSidebar();
+        }
+      });
     });
 
     handleScroll();
